@@ -2,16 +2,16 @@
 
 University project for the "Programmation Distribuée" course (Master 1 VMI). This repository contains the source code for our Microservices Architecture implementation.
 
-## 👨‍💻 Team
+## Team
 * **Mehdi AGHAEI** - [Docker Hub Profile](https://hub.docker.com/u/sorooshaghaei)
 * **Maksym DOLHOV** - [Docker Hub Profile](https://hub.docker.com/u/3v3r51nc3)
 
-## 🏗️ Project Architecture
+## Project Architecture
 Our project is composed of several microservices:
 * **Service A**: [...] (Developed by ...)
 * **Service B**: [...] (Developed by ...)
 
-## 🚀 How to run the project locally
+## How to run the project locally
 
 1. Clone this repository:
    ```bash
