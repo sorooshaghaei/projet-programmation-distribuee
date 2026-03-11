@@ -122,16 +122,16 @@
 \newcommand{\KubernetesObjectsFigure}{%
 \begin{center}
 \begin{tikzpicture}[
-  node distance=8mm and 10mm,
+  node distance=11mm and 14mm,
   every node/.style={font=\small, align=center},
-  box/.style={draw=black, rounded corners=3pt, minimum height=10mm, minimum width=28mm},
+  box/.style={draw=black, rounded corners=3pt, minimum height=10mm, minimum width=30mm},
   arr/.style={-{Latex[length=2.5mm]}, thick, draw=softblue}
 ]
 \node[box, fill=sunwash] (deployment) {Deployment\\declares replicas};
-\node[box, fill=rosewash, below left=of deployment] (pod1) {Pod 1\\runs container};
-\node[box, fill=rosewash, below right=of deployment] (pod2) {Pod 2\\runs container};
-\node[box, fill=mintwash, right=22mm of deployment] (service) {Service\\stable entry point};
-\node[box, fill=skywash, below=of service] (ingress) {Ingress / external\\HTTP rule};
+\node[box, fill=rosewash, below left=12mm and 16mm of deployment] (pod1) {Pod 1\\runs container};
+\node[box, fill=rosewash, below right=12mm and 16mm of deployment] (pod2) {Pod 2\\runs container};
+\node[box, fill=mintwash, right=30mm of deployment] (service) {Service\\stable entry point};
+\node[box, fill=skywash, below=14mm of service] (ingress) {Ingress / external\\HTTP rule};
 \draw[arr] (deployment) -- (pod1);
 \draw[arr] (deployment) -- (pod2);
 \draw[arr] (service) -- (pod1);
