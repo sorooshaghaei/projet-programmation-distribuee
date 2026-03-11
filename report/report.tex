@@ -1,0 +1,1236 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=2.1cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{microtype}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=MidnightBlue,
+  urlcolor=BrickRed,
+  pdftitle={Distributed Programming Learning Guide},
+  pdfauthor={Projet Programmation Distribuee Team}
+}
+
+\definecolor{panel}{HTML}{FFF8EE}
+\definecolor{linegold}{HTML}{D7B98A}
+\definecolor{softgreen}{HTML}{F4F8F4}
+\definecolor{skywash}{HTML}{EAF4FF}
+\definecolor{mintwash}{HTML}{EDF8F1}
+\definecolor{rosewash}{HTML}{FFF0EC}
+\definecolor{sunwash}{HTML}{FFF4CF}
+\definecolor{shellbg}{HTML}{17211C}
+\definecolor{ink}{HTML}{182620}
+\definecolor{warmtext}{HTML}{8A6A3B}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Distributed Programming Learning Guide}
+\fancyhead[R]{March 11, 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{1.5em}
+\renewcommand{\arraystretch}{1.12}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{softgreen},
+  frame=single,
+  rulecolor=\color{linegold},
+  showstringspaces=false,
+  breaklines=true,
+  tabsize=2
+}
+
+\lstdefinestyle{terminal}{
+  basicstyle=\ttfamily\small\color{white},
+  backgroundcolor=\color{shellbg},
+  frame=single,
+  rulecolor=\color{linegold},
+  showstringspaces=false,
+  breaklines=true
+}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={const,let,import,from,export,default,return,if,else,async,await,function},
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\newcommand{\PanelBox}[1]{%
+  \begin{center}
+  \setlength{\fboxsep}{10pt}%
+  \fcolorbox{linegold}{panel}{\parbox{0.94\linewidth}{#1}}%
+  \end{center}
+}
+
+\newcommand{\LearningCallout}[2]{%
+  \begin{center}
+  \setlength{\fboxsep}{10pt}%
+  \fcolorbox{linegold}{#1}{\parbox{0.94\linewidth}{#2}}%
+  \end{center}
+}
+
+\newcommand{\MemoryBox}[1]{%
+  \LearningCallout{skywash}{\textbf{Memory hook.} #1}%
+}
+
+\newcommand{\ChecklistBox}[1]{%
+  \LearningCallout{mintwash}{\textbf{Checklist.} #1}%
+}
+
+\newcommand{\MistakeBox}[1]{%
+  \LearningCallout{rosewash}{\textbf{Common mistake.} #1}%
+}
+
+\newcommand{\CodePill}[1]{%
+  \fcolorbox{black}{white}{\strut{\ttfamily\footnotesize #1}}%
+}
+
+\newcommand{\RoadmapFigure}{%
+\begin{center}
+\noindent\makebox[\linewidth][c]{%
+\begin{minipage}[c]{0.17\linewidth}\centering
+\fcolorbox{black}{skywash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
+\small\textbf{Architecture}\\
+\scriptsize (architecture)
+}}
+\end{minipage}
+\hspace{0.01\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.01\linewidth}
+\begin{minipage}[c]{0.17\linewidth}\centering
+\fcolorbox{black}{panel}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
+\textbf{Services}\\
+\scriptsize (services)
+}}
+\end{minipage}
+\hspace{0.01\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.01\linewidth}
+\begin{minipage}[c]{0.17\linewidth}\centering
+\fcolorbox{black}{mintwash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
+\textbf{Containers}\\
+\scriptsize (conteneurs)
+}}
+\end{minipage}
+\hspace{0.01\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.01\linewidth}
+\begin{minipage}[c]{0.17\linewidth}\centering
+\fcolorbox{black}{sunwash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
+\textbf{Cluster}\\
+\scriptsize (cluster)
+}}
+\end{minipage}
+\hspace{0.01\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.01\linewidth}
+\begin{minipage}[c]{0.17\linewidth}\centering
+\fcolorbox{black}{rosewash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
+\textbf{Cloud + IaC}\\
+\scriptsize (cloud + IaC)
+}}
+\end{minipage}
+}
+\end{center}
+}
+
+\newcommand{\ClientServerFigure}{%
+\begin{center}
+\noindent\makebox[\linewidth][c]{%
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{skywash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
+\textbf{Client}\\
+\scriptsize browser or app
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{panel}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
+\textbf{API}\\
+\scriptsize REST or gRPC
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{mintwash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
+\textbf{Service}\\
+\scriptsize business logic
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{rosewash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
+\textbf{Data}\\
+\scriptsize database or stream
+}}
+\end{minipage}
+}
+\end{center}
+}
+
+\newcommand{\ProjectArchitectureFigure}{%
+\begin{center}
+\fcolorbox{linegold}{white}{%
+\parbox{0.94\linewidth}{%
+\centering \textbf{Current Project Architecture}\\[0.8em]
+\begin{minipage}[t]{0.28\linewidth}\centering
+\fcolorbox{black}{skywash}{\parbox[c][24mm][c]{0.84\linewidth}{\centering
+\textbf{Client / Browser}\\[0.5em]
+\scriptsize sends HTTP request
+}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.28\linewidth}\centering
+\fcolorbox{black}{mintwash}{\parbox[c][24mm][c]{0.84\linewidth}{\centering
+\textbf{Service B}\\[0.5em]
+\scriptsize FastAPI aggregator\\
+\scriptsize port 5001
+}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.28\linewidth}\centering
+\fcolorbox{black}{panel}{\parbox[c][24mm][c]{0.84\linewidth}{\centering
+\textbf{Service A}\\[0.5em]
+\scriptsize Flask microservice\\
+\scriptsize port 5000
+}}
+\end{minipage}\\[0.8em]
+\centering
+Service B calls Service A and returns a combined JSON response.
+}}
+\end{center}
+}
+
+\newcommand{\DockerFigure}{%
+\begin{center}
+\noindent\makebox[\linewidth][c]{%
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{skywash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{Source code}\\
+\scriptsize (code source)
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{panel}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{Dockerfile}\\
+\scriptsize (recette)
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{sunwash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{Image}\\
+\scriptsize (image)
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{rosewash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{Container}\\
+\scriptsize (conteneur)
+}}
+\end{minipage}
+}
+\end{center}
+}
+
+\newcommand{\KubernetesFigure}{%
+\begin{center}
+\fcolorbox{linegold}{white}{%
+\parbox{0.94\linewidth}{%
+\centering \textbf{Kubernetes (orchestration) cluster view}\\[0.8em]
+\begin{minipage}[t]{0.29\linewidth}\centering
+\fcolorbox{black}{skywash}{\parbox[c][23mm][c]{0.84\linewidth}{\centering
+\textbf{Deployment}\\[0.5em]
+\scriptsize desired replicas
+}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.29\linewidth}\centering
+\fcolorbox{black}{mintwash}{\parbox[c][23mm][c]{0.84\linewidth}{\centering
+\textbf{Pods}\\[0.5em]
+\scriptsize running containers
+}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.29\linewidth}\centering
+\fcolorbox{black}{rosewash}{\parbox[c][23mm][c]{0.84\linewidth}{\centering
+\textbf{Service}\\[0.5em]
+\scriptsize stable network access
+}}
+\end{minipage}\\[0.8em]
+The deployment manages pods, and the service exposes them inside or outside the cluster.
+}}
+\end{center}
+}
+
+\newcommand{\KafkaFigure}{%
+\begin{center}
+\noindent\makebox[\linewidth][c]{%
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{skywash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{Producer}\\
+\scriptsize (producteur)
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{panel}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{Topic}\\
+\scriptsize ordered log
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{mintwash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{Consumer group}\\
+\scriptsize (groupe)
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{rosewash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{Next service}\\
+\scriptsize event reaction
+}}
+\end{minipage}
+}
+\end{center}
+}
+
+\newcommand{\TerraformFigure}{%
+\begin{center}
+\noindent\makebox[\linewidth][c]{%
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{skywash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{.tf files}\\
+\scriptsize desired infrastructure
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{panel}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{terraform plan}\\
+\scriptsize preview changes
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{mintwash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{terraform apply}\\
+\scriptsize create resources
+}}
+\end{minipage}
+\hspace{0.02\linewidth}
+\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
+\hspace{0.02\linewidth}
+\begin{minipage}[c]{0.22\linewidth}\centering
+\fcolorbox{black}{rosewash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
+\textbf{State}\\
+\scriptsize (etat)
+}}
+\end{minipage}
+}
+\end{center}
+}
+
+\title{\Huge Distributed Programming Learning Guide\\[0.4em]\Large Projet Programmation Distribuee}
+\author{
+  Mehdi AGHAEI \and Maksym DOLHOV\\[0.5em]
+  \small Master 1 VMI, Universite Paris Cite
+}
+\date{March 11, 2026}
+
+\begin{document}
+\maketitle
+
+\PanelBox{
+This document is a \textbf{fully independent learning guide} for the distributed programming course (\emph{programmation distribuee}). It is written in English, but each major French course keyword is kept in parentheses so the guide stays aligned with the original course language. The guide is built to be \textbf{easy to update}: one LaTeX source, one compiled PDF, and an appendix that maps every course file to the section that should be revised when the source material changes.
+}
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+This report is designed for two goals at the same time. The first goal is to teach the full learning path of the course in a clear order, from software architecture (\emph{architecture logicielle}) and web services (\emph{services web}) to containers (\emph{conteneurs}), Kubernetes, cloud infrastructure, event streaming, and infrastructure as code. The second goal is to connect that theory to the actual repository in \texttt{projet-programmation-distribuee}, where two services already exist: \texttt{service-a} in Flask and \texttt{service-b} in FastAPI.
+
+The course programme (\emph{programme}) extracted from the local course documents emphasizes DevSecOps (\emph{DevSecOps}), cloud-native engineering, microservices, REST or gRPC communication, cloud infrastructure, Docker, Kubernetes, Terraform, and project-based evaluation. The project brief (\emph{projet}) confirms that a strong submission moves gradually: one service first, then multiple services, then a gateway, then a database, then cluster security, and finally cloud deployment.
+
+\MemoryBox{The entire course can be memorized as one ladder: \textbf{architecture -> web service -> microservice -> container -> cluster -> cloud -> automation}. Every lecture fits somewhere on that ladder.}
+
+\section{How To Use This Guide}
+
+This is not a lecture summary that assumes you already know the basics. It is organized as a progression:
+
+\begin{enumerate}
+  \item understand the big picture and the vocabulary,
+  \item read a small amount of code,
+  \item connect the code to an architecture diagram,
+  \item run a practice exercise,
+  \item check the solution and the expected output.
+\end{enumerate}
+
+The appendix at the end is intentionally more basic. It includes short refreshers on HTTP, JSON, YAML, SQL, JPA vocabulary, container vocabulary, Kubernetes vocabulary, and an update map for the original source files.
+
+\section{Learning Roadmap}
+
+\RoadmapFigure
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+\textbf{Phase} & \textbf{Main learning question} \\
+\midrule
+Architecture (\emph{architecture}) & How should a distributed system be decomposed into services and interactions? \\
+Web services (\emph{services web}) & How do clients and services communicate through APIs? \\
+Data and persistence (\emph{donnees}) & How do services store, retrieve, and protect data? \\
+Containers (\emph{conteneurs}) & How do we package services consistently? \\
+Orchestration (\emph{orchestration}) & How do we run many containers as a controlled system? \\
+Cloud (\emph{cloud}) & Which infrastructure models support scalable deployment? \\
+Automation (\emph{Infrastructure as Code}) & How do we describe infrastructure declaratively and reproducibly? \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Distributed Programming Big Picture}
+
+Distributed programming (\emph{programmation distribuee}) begins when one program is not enough. Instead of one isolated executable, we now have multiple components that communicate through the network. These components may run on different machines, start at different times, fail independently, scale independently, and be updated independently. That is why architecture matters much more in distributed systems than in small local scripts.
+
+\ClientServerFigure
+
+\subsection{Client, service, and data roles}
+
+The client (\emph{client}) is responsible for asking for work or information. The service (\emph{service}) receives the request, applies business logic, and returns a response. The data layer stores persistent information or streams events. The course material on the big picture of web services and the software architecture lecture both reinforce this same separation of concerns.
+
+\begin{lstlisting}[style=terminal, caption={Mental model for one request-response cycle}]
+Client -> HTTP request -> Service -> Database or stream -> HTTP response
+\end{lstlisting}
+
+\LearningCallout{mintwash}{
+\textbf{Why this matters.}\\
+In a distributed system, the network is never free. A function call inside one process is not the same as a remote call across services. The moment you leave one process boundary, you must think about latency, failures, timeouts, contracts, and serialization.
+}
+
+\subsection{REST, RPC, and web services}
+
+The course programme explicitly mentions web services in REST and optionally gRPC, plus remote procedure call (\emph{appel de procedure distante}). These are not identical styles.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+\textbf{Style} & \textbf{Main idea} & \textbf{Typical use} \\
+\midrule
+REST & expose resources through HTTP methods and JSON & public APIs, simple service integration \\
+RPC / gRPC & call remote procedures with explicit method contracts & internal service-to-service calls, strong schemas \\
+Messaging & send events asynchronously through a broker & loose coupling and event-driven systems \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\MemoryBox{REST thinks first about resources. RPC thinks first about methods. Messaging thinks first about events.}
+
+\subsection{Worked active learning}
+
+\LearningCallout{skywash}{
+\textbf{Question.} Why is a remote call more fragile than a local function call?\\
+\textbf{Answer.} Because a remote call crosses the network, depends on another running service, and can fail because of latency, DNS, authentication, timeouts, or service unavailability.\\[0.6em]
+\textbf{Question.} Why do distributed systems need explicit contracts?\\
+\textbf{Answer.} Because different services and clients must agree on URLs, methods, schemas, and error formats.
+}
+
+\section{Software Architecture And Microservices}
+
+The software architecture lecture (\emph{Software Architecture}) and the microservices lecture (\emph{microservices}) naturally belong together. The architecture lecture teaches decomposition, responsibilities, dependencies, and quality attributes. The microservices lecture narrows that general idea into service-oriented decomposition.
+
+\subsection{Monolith versus microservices}
+
+A monolith keeps many functions inside one application. A microservice architecture splits those functions into smaller services, each with a narrower responsibility. This is powerful, but not free.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+\textbf{Criterion} & \textbf{Monolith} & \textbf{Microservices} \\
+\midrule
+Deployment & one unit & many units \\
+Data ownership & often shared & ideally per service \\
+Complexity location & inside the codebase & inside code plus network and operations \\
+Independent scaling & limited & stronger \\
+Failure isolation & weaker & stronger if well designed \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\MistakeBox{Microservices are not automatically better. They are better only when the team and the system actually benefit from separate deployment, separate scaling, or separate ownership.}
+
+\subsection{The current repository as a microservice seed}
+
+The current repository is already a valid teaching example of the first microservice step.
+
+\ProjectArchitectureFigure
+
+\begin{lstlisting}[style=code, language=Python, caption={Service A: simple Flask endpoint}]
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return jsonify({"message": "Hello from Service A", "status": "success"})
+\end{lstlisting}
+
+\begin{lstlisting}[style=code, language=Python, caption={Service B: FastAPI service calling Service A}]
+@app.get("/")
+async def index():
+    response = await http_client.get(SERVICE_A_URL)
+    response.raise_for_status()
+    service_a_data = response.json()
+
+    return {
+        "service_b": {"message": "Hello from Service B", "status": "success"},
+        "service_a": service_a_data,
+    }
+\end{lstlisting}
+
+\begin{lstlisting}[style=terminal, caption={Expected JSON output from Service B}]
+{
+  "service_b": {
+    "message": "Hello from Service B",
+    "status": "success"
+  },
+  "service_a": {
+    "message": "Hello from Service A",
+    "status": "success"
+  }
+}
+\end{lstlisting}
+
+\LearningCallout{rosewash}{
+\textbf{Important architectural lesson.}\\
+Service B is not just another endpoint. It is already acting as an integration layer: it calls another service, checks the response, and returns a combined output. That is exactly the kind of step that turns a small local app into a distributed system.
+}
+
+\subsection{Gateway, service mesh, and project milestones}
+
+The project brief suggests a progressive path: one service first, then a gateway, then a second service, then optionally a service mesh. This is a good pedagogical order because each milestone introduces one new kind of complexity instead of all complexity at once.
+
+\begin{enumerate}
+  \item One service in local mode.
+  \item Package that service as a Docker image.
+  \item Run it in Kubernetes.
+  \item Add a gateway (\emph{passerelle}) or ingress.
+  \item Add a second service and inter-service communication.
+  \item Add a database and security rules.
+\end{enumerate}
+
+\section{Web Services, REST, And Cloud Integration}
+
+The big-picture, cloud-integration, and REST practice materials all converge on the same core skill: designing and consuming service interfaces correctly.
+
+\subsection{REST fundamentals}
+
+REST web services (\emph{services web REST}) typically expose URLs, HTTP methods, and JSON payloads.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+\textbf{HTTP method} & \textbf{Common CRUD meaning} & \textbf{Example} \\
+\midrule
+\texttt{GET} & read & list all orders \\
+\texttt{POST} & create & create a new order \\
+\texttt{PUT} or \texttt{PATCH} & update & modify order status \\
+\texttt{DELETE} & remove & delete an order \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{lstlisting}[style=code, language=JavaScript, caption={Client-side fetch example}]
+async function loadOrders() {
+  const response = await fetch('http://localhost:8000/orders')
+
+  if (!response.ok) {
+    throw new Error('Request failed')
+  }
+
+  return response.json()
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=terminal, caption={Visible result}]
+[
+  { "id": 1, "customer": "Alice", "status": "created" }
+]
+\end{lstlisting}
+
+\subsection{Error handling and contracts}
+
+Integration is not only about the happy path. One service may be down, may return invalid JSON, or may reject a request because of validation or permissions.
+
+\begin{lstlisting}[style=terminal, caption={Typical failure contract}]
+502 Bad Gateway
+{
+  "detail": "Service A unavailable: timeout"
+}
+\end{lstlisting}
+
+The current \texttt{service-b} already demonstrates a good practice here: it catches \texttt{httpx.HTTPError} and translates it into a \texttt{502} response.
+
+\subsection{TP-style exercise with solution}
+
+\LearningCallout{mintwash}{
+\textbf{Exercise.} Write a small REST endpoint that returns a list of books.\\
+\textbf{Solution idea.} Build a tiny \texttt{GET} route that returns JSON directly, then verify that the browser or API client displays an array of book objects.
+}
+
+\begin{lstlisting}[style=code, language=Python, caption={REST exercise solution}]
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/books")
+def books():
+    return [
+        {"id": 1, "title": "Distributed Systems"},
+        {"id": 2, "title": "Cloud Native Patterns"},
+    ]
+\end{lstlisting}
+
+\begin{lstlisting}[style=terminal, caption={Expected output}]
+[
+  {"id": 1, "title": "Distributed Systems"},
+  {"id": 2, "title": "Cloud Native Patterns"}
+]
+\end{lstlisting}
+
+\section{Persistence And JPA}
+
+The course sources \texttt{JPA en.pdf} and \texttt{TP JPA.pdf} cover persistence (\emph{persistance}) and the Java Persistence API. Even if the current repository is Python-based, JPA remains important because it teaches object-relational mapping (\emph{mapping objet-relationnel}), entities, repositories, and transactional thinking.
+
+\subsection{Why persistence matters in distributed systems}
+
+Without persistence, a service only remembers data while the process is alive. As soon as the service restarts, everything disappears. Real distributed systems therefore need a clear data model, durable storage, and a strategy for consistency across service boundaries.
+
+\subsection{JPA mental model}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+\textbf{JPA concept} & \textbf{Meaning} \\
+\midrule
+Entity (\emph{entite}) & Java class mapped to a database table \\
+Repository (\emph{repository}) & data-access interface for queries and persistence \\
+Transaction (\emph{transaction}) & controlled unit of database work \\
+ORM & object-relational mapping between code objects and tables \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{lstlisting}[style=code, language=Java, caption={Simple JPA entity example}]
+@Entity
+public class Order {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String customer;
+    private String status;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=code, language=Java, caption={Repository example}]
+public interface OrderRepository extends JpaRepository<Order, Long> {
+    List<Order> findByStatus(String status);
+}
+\end{lstlisting}
+
+\LearningCallout{skywash}{
+\textbf{Code explanation.}\\
+\texttt{@Entity} marks the class as persistent.\\
+\texttt{@Id} defines the primary key.\\
+\texttt{@GeneratedValue} asks the database or ORM to create the identifier.\\
+\texttt{JpaRepository<Order, Long>} gives CRUD operations without writing SQL manually for every simple case.
+}
+
+\subsection{JPA practice with answer}
+
+\LearningCallout{mintwash}{
+\textbf{Exercise.} Add an email field to a JPA \texttt{Customer} entity and make it unique.\\
+\textbf{Solution idea.} Declare the field in the entity and add a uniqueness constraint so the schema protects the data model automatically.
+}
+
+\begin{lstlisting}[style=code, language=Java, caption={JPA exercise solution}]
+@Entity
+public class Customer {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(unique = true)
+    private String email;
+}
+\end{lstlisting}
+
+\textbf{Result.} The database schema enforces uniqueness, so the same email cannot be inserted twice.
+
+\section{Docker And Docker Images}
+
+The course sources \texttt{9 - Docker.pdf} and \texttt{Getting started with Docker Images.pdf} are central because containers are the bridge from local code to reproducible deployment.
+
+\DockerFigure
+
+\subsection{Image versus container}
+
+An image (\emph{image}) is a built artifact. A container (\emph{conteneur}) is a running instance of that artifact. This distinction is one of the most important memory points in the whole course.
+
+\MemoryBox{Image = packaged recipe. Container = running instance.}
+
+\subsection{Walkthrough of the current Dockerfiles}
+
+\begin{lstlisting}[style=code, caption={Service A Dockerfile}]
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app.py .
+
+EXPOSE 5000
+
+CMD ["python", "app.py"]
+\end{lstlisting}
+
+\begin{lstlisting}[style=code, caption={Service B Dockerfile}]
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY main.py .
+
+EXPOSE 5001
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5001"]
+\end{lstlisting}
+
+\LearningCallout{mintwash}{
+\textbf{Line-by-line explanation.}\\
+\texttt{FROM} selects the base image.\\
+\texttt{WORKDIR} chooses the working directory inside the container.\\
+\texttt{COPY requirements.txt .} copies only dependencies first, which helps reuse image layers.\\
+\texttt{RUN pip install ...} installs Python packages.\\
+\texttt{COPY app.py .} or \texttt{COPY main.py .} adds the service code.\\
+\texttt{EXPOSE} documents the port.\\
+\texttt{CMD} gives the default startup command.
+}
+
+\subsection{Build and run practice}
+
+\begin{lstlisting}[style=terminal, caption={Service A local container workflow}]
+cd service-a
+docker build -t service-a .
+docker run -p 5000:5000 service-a
+\end{lstlisting}
+
+\begin{lstlisting}[style=terminal, caption={Expected response from Service A}]
+curl http://localhost:5000/
+{"message":"Hello from Service A","status":"success"}
+\end{lstlisting}
+
+\subsection{Active learning with solution}
+
+\LearningCallout{rosewash}{
+\textbf{Exercise.} Why is it better to copy \texttt{requirements.txt} before copying the whole application?\\
+\textbf{Answer.} Because Docker can reuse the dependency-install layer if the code changes but the dependency file does not. This makes rebuilds faster.
+}
+
+\section{Kubernetes And Container Orchestration}
+
+The Kubernetes lecture (\texttt{12 - Kubernetes.pdf}) is where one container becomes a managed system. Kubernetes solves scheduling, desired state, replica management, service exposure, rolling updates, and recovery.
+
+\KubernetesFigure
+
+\subsection{Core objects}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+\textbf{Object} & \textbf{Role} \\
+\midrule
+Pod & smallest deployable unit, usually one main container \\
+Deployment & keeps the desired number of pod replicas alive \\
+Service & stable network endpoint in front of pods \\
+ConfigMap / Secret & external configuration and sensitive data management \\
+Ingress or Gateway & external routing into the cluster \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{lstlisting}[style=code, caption={Simple Kubernetes deployment and service}]
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-a
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: service-a
+  template:
+    metadata:
+      labels:
+        app: service-a
+    spec:
+      containers:
+        - name: service-a
+          image: your-dockerhub-user/service-a:latest
+          ports:
+            - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-a
+spec:
+  selector:
+    app: service-a
+  ports:
+    - port: 80
+      targetPort: 5000
+\end{lstlisting}
+
+\begin{lstlisting}[style=terminal, caption={Expected kubectl output}]
+$ kubectl get pods
+service-a-abc123   Running
+service-a-def456   Running
+
+$ kubectl get service
+service-a   ClusterIP   10.x.x.x
+\end{lstlisting}
+
+\MistakeBox{A deployment is not the same thing as a service. The deployment manages pods. The service gives a stable network identity.}
+
+\section{Cloud And Infrastructure As A Service}
+
+The cloud sources \texttt{Cloud.pdf} and \texttt{Cloud Infrastructure as a Service.pdf} move from local orchestration to infrastructure thinking.
+
+\subsection{Service models}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+\textbf{Model} & \textbf{What the provider manages} & \textbf{What you manage} \\
+\midrule
+IaaS & virtual machines, storage, networking primitives & operating systems, runtime, deployment \\
+PaaS & platform runtime and deployment environment & application code and app configuration \\
+SaaS & full hosted application & end-user configuration \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\LearningCallout{skywash}{
+\textbf{Why IaaS matters in this course.}\\
+IaaS (\emph{Infrastructure as a Service}) forces you to think about compute, storage, networking, access rules, and automation. It is the natural bridge between architecture diagrams and real deployment.
+}
+
+\subsection{Cloud integration}
+
+Cloud integration (\emph{integration cloud}) asks how distributed services interact with managed infrastructure: load balancers, managed databases, object storage, pub/sub systems, identity services, and monitoring platforms.
+
+\ChecklistBox{
+When moving a local microservice system to the cloud, check these five items: network exposure, secrets, persistence, observability, and security policy.
+}
+
+\section{Kafka And Event-Driven Communication}
+
+The Kafka course file introduces asynchronous communication. This matters because not all distributed interactions should be request-response.
+
+\KafkaFigure
+
+\subsection{Why use Kafka}
+
+Kafka is useful when one service should publish an event and several consumers may react later. It supports decoupling, buffering, replay, and scalable consumer groups.
+
+\begin{lstlisting}[style=code, language=Python, caption={Conceptual producer example}]
+producer.send("orders.created", value={
+    "order_id": 17,
+    "customer": "Alice",
+    "status": "created",
+})
+\end{lstlisting}
+
+\begin{lstlisting}[style=code, language=Python, caption={Conceptual consumer example}]
+for message in consumer:
+    event = message.value
+    print("processing", event["order_id"])
+\end{lstlisting}
+
+\begin{lstlisting}[style=terminal, caption={Visible output}]
+processing 17
+\end{lstlisting}
+
+\LearningCallout{mintwash}{
+\textbf{When to choose Kafka.}\\
+Choose Kafka when services should react to events independently and at different speeds. If every call needs an immediate answer, REST or gRPC is often simpler.
+}
+
+\section{Terraform And Infrastructure As Code}
+
+The Terraform lecture (\texttt{14 - Terraform.pdf}) teaches the declarative approach to infrastructure (\emph{Infrastructure as Code}).
+
+\TerraformFigure
+
+\begin{lstlisting}[style=code, caption={Small Terraform example}]
+terraform {
+  required_providers {
+    docker = {
+      source = "kreuzwerker/docker"
+    }
+  }
+}
+
+resource "docker_image" "service_a" {
+  name = "service-a:latest"
+}
+\end{lstlisting}
+
+\begin{lstlisting}[style=terminal, caption={Expected Terraform workflow}]
+terraform init
+terraform plan
+terraform apply
+\end{lstlisting}
+
+\begin{lstlisting}[style=terminal, caption={Typical plan output idea}]
+Plan: 1 to add, 0 to change, 0 to destroy.
+\end{lstlisting}
+
+\MemoryBox{Terraform is not a shell script. It is a declaration of the desired state plus a state file that tracks what exists.}
+
+\section{Angular And The Client Role}
+
+The presence of \texttt{Angular en.pdf} inside the course folder matters even if the current repository has no Angular client. It shows that distributed programming is not only backend and infrastructure. A client application often consumes the same APIs, visualizes data, and triggers workflows.
+
+\subsection{Why the client still matters}
+
+In a microservice system, the frontend or client application often acts as:
+
+\begin{enumerate}
+  \item an API consumer,
+  \item a validator of user input before the backend,
+  \item a presenter of eventual consistency and loading states,
+  \item an integration surface for authentication.
+\end{enumerate}
+
+\LearningCallout{rosewash}{
+\textbf{Practical course connection.}\\
+Even when the main project focus is distributed infrastructure, a frontend framework such as Angular (\emph{Angular}) or React often becomes the human-facing edge of the system.
+}
+
+\section{Step-By-Step Project Workbook For This Repository}
+
+The project brief gives a grading ladder. This section translates that ladder into concrete actions for the current repository.
+
+\subsection{Step 1: keep one service working locally}
+
+Start with \texttt{service-a}. The purpose is to verify the simplest web service (\emph{service web}) path.
+
+\begin{lstlisting}[style=terminal]
+cd service-a
+python app.py
+curl http://localhost:5000/
+\end{lstlisting}
+
+\begin{lstlisting}[style=terminal]
+{"message":"Hello from Service A","status":"success"}
+\end{lstlisting}
+
+\subsection{Step 2: make the second service depend on the first}
+
+The current \texttt{service-b} already performs service-to-service communication. That is the first real distributed step.
+
+\begin{lstlisting}[style=terminal]
+cd service-b
+uvicorn main:app --host 0.0.0.0 --port 5001
+\end{lstlisting}
+
+\begin{lstlisting}[style=terminal, caption={Expected logical output when Service A is reachable}]
+{
+  "service_b": {"message": "Hello from Service B", "status": "success"},
+  "service_a": {"message": "Hello from Service A", "status": "success"}
+}
+\end{lstlisting}
+
+\subsection{Step 3: containerize both services}
+
+This step is already partly done because the Dockerfiles exist.
+
+\begin{lstlisting}[style=terminal]
+docker build -t service-a ./service-a
+docker build -t service-b ./service-b
+\end{lstlisting}
+
+\subsection{Step 4: add orchestration}
+
+The project brief recommends moving from local execution to Kubernetes deployment. At this stage, create deployment and service manifests for both services, then add networking so Service B resolves Service A through the cluster service name.
+
+\subsection{Step 5: add a gateway, database, and security}
+
+This is where the project starts earning the higher project scores described in the project brief. The next improvement ladder is:
+
+\begin{enumerate}
+  \item gateway or ingress,
+  \item persistent database,
+  \item RBAC and cluster security,
+  \item optional cloud deployment.
+\end{enumerate}
+
+\LearningCallout{mintwash}{
+\textbf{Important project strategy.}\\
+Do not start by building everything. Build one healthy vertical slice first: one service, one container, one cluster deployment. Then add complexity in layers.
+}
+
+\section{Worked Active Learning And Practice}
+
+This section is intentionally practical. Every exercise has a complete answer, an explanation, and an expected visible result.
+
+\subsection*{Exercise 1: explain the role of Service B}
+\textbf{Question.} What makes \texttt{service-b} more than just another endpoint?
+
+\begin{lstlisting}[style=code, language=Python]
+response = await http_client.get(SERVICE_A_URL)
+response.raise_for_status()
+service_a_data = response.json()
+\end{lstlisting}
+
+\textbf{Answer.} \texttt{service-b} is an integration service. It consumes another service over HTTP and composes the final response.
+
+\textbf{Expected result.}
+\begin{lstlisting}[style=terminal]
+Service B returns its own message plus Service A data.
+\end{lstlisting}
+
+\subsection*{Exercise 2: build a container}
+\textbf{Question.} Which Docker command turns a Dockerfile into an image?
+
+\begin{lstlisting}[style=terminal]
+docker build -t service-a ./service-a
+\end{lstlisting}
+
+\textbf{Answer.} \texttt{docker build} reads the Dockerfile and creates an image tagged \texttt{service-a}.
+
+\subsection*{Exercise 3: read a Kubernetes deployment}
+\textbf{Question.} What does the \texttt{replicas} field mean?
+
+\begin{lstlisting}[style=code]
+spec:
+  replicas: 2
+\end{lstlisting}
+
+\textbf{Answer.} Kubernetes should keep two pod instances alive.
+
+\subsection*{Exercise 4: detect a REST contract}
+\textbf{Question.} Why is JSON a good data format for REST services?
+
+\textbf{Answer.} Because it is text-based, easy to read, easy to parse in browsers and backend languages, and naturally matches objects, arrays, and key-value structures.
+
+\subsection*{Exercise 5: design a Kafka event}
+\textbf{Question.} Write a small event payload for an order creation.
+
+\begin{lstlisting}[style=code]
+{
+  "event": "order.created",
+  "order_id": 17,
+  "customer": "Alice"
+}
+\end{lstlisting}
+
+\textbf{Explanation.} The event name identifies the kind of change, and the payload carries the minimum information that consumers need.
+
+\subsection*{Exercise 6: reason about Terraform}
+\textbf{Question.} Why is \texttt{terraform plan} important before \texttt{terraform apply}?
+
+\textbf{Answer.} Because it previews the changes and gives you a chance to catch destructive or incorrect infrastructure modifications before they happen.
+
+\subsection*{Exercise 7: persistence design}
+\textbf{Question.} What is one reason a microservice should usually own its own database schema?
+
+\textbf{Answer.} To reduce tight coupling and allow the service to evolve independently.
+
+\subsection*{Exercise 8: graceful failure}
+\textbf{Question.} What should \texttt{service-b} do if \texttt{service-a} is unavailable?
+
+\textbf{Answer.} Return a clear error, for example a \texttt{502} response, instead of hanging silently or crashing without explanation.
+
+\subsection*{Exercise 9: cloud reasoning}
+\textbf{Question.} Give one reason to deploy the project in a cloud environment.
+
+\textbf{Answer.} Cloud infrastructure makes it easier to provision compute, networking, storage, and managed services without owning physical servers.
+
+\subsection*{Exercise 10: project strategy}
+\textbf{Question.} Why does the project brief recommend starting with only one service?
+
+\textbf{Answer.} Because a single working service establishes the first stable baseline. Without that baseline, adding containers, Kubernetes, gateways, and databases makes debugging much harder.
+
+\section{Appendix: Basic Learning And Knowledge}
+
+\appendix
+
+\subsection{HTTP basics}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+\textbf{Term} & \textbf{Meaning} \\
+\midrule
+HTTP request & message sent by a client to ask for a resource or action \\
+HTTP response & message returned by the server with status, headers, and body \\
+Status code & numeric signal such as 200, 404, 500 \\
+Header & metadata such as content type or authorization \\
+Body & payload content such as JSON \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{JSON basics}
+
+\begin{lstlisting}[style=code]
+{
+  "name": "Service A",
+  "status": "success",
+  "ports": [5000, 5001]
+}
+\end{lstlisting}
+
+JSON (\emph{JavaScript Object Notation}) is the default language of many web service integrations because it is simple and interoperable.
+
+\subsection{YAML basics}
+
+\begin{lstlisting}[style=code]
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-a
+\end{lstlisting}
+
+YAML (\emph{YAML Ain't Markup Language}) is common in Kubernetes configuration because it is more readable than raw JSON for long infrastructure files.
+
+\subsection{SQL and persistence basics}
+
+\begin{lstlisting}[style=code, language=SQL, caption={Conceptual SQL}]
+CREATE TABLE orders (
+  id BIGINT PRIMARY KEY,
+  customer VARCHAR(255),
+  status VARCHAR(50)
+);
+\end{lstlisting}
+
+Persistence means data survives process restarts. That is why databases matter in distributed systems.
+
+\subsection{Glossary}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+\textbf{Term} & \textbf{Short reminder} \\
+\midrule
+Microservice & small service with a focused responsibility \\
+Container & running instance of an image \\
+Pod & Kubernetes runtime unit for containers \\
+Topic & Kafka append-only event channel \\
+State file & Terraform record of managed infrastructure \\
+Gateway & entry point in front of services \\
+RBAC & role-based access control \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Source Update Map}
+
+This document is deliberately structured to be easy to update when the local course sources change.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+\textbf{Source file} & \textbf{Where to update this guide if that source changes} \\
+\midrule
+\texttt{1 - Web service big picture.pdf} & Introduction and ``Distributed Programming Big Picture'' \\
+\texttt{CloudIntegration.pdf} & ``Web Services, REST, And Cloud Integration'' \\
+\texttt{Prog Web/Angular en.pdf} & ``Angular And The Client Role'' \\
+\texttt{Prog Web/JPA en.pdf} & ``Persistence And JPA'' \\
+\texttt{Prog Web/TP JPA.pdf} & JPA exercise examples and appendix basics \\
+\texttt{Prog Web/TP Rest Web Service.pdf} & REST exercise section and HTTP basics \\
+\texttt{Prog Web/microservices.pdf} & ``Software Architecture And Microservices'' \\
+\texttt{Prog dist/9 - Docker.pdf} & ``Docker And Docker Images'' \\
+\texttt{Prog dist/Getting started with Docker Images.pdf} & Docker image explanations and build workflow \\
+\texttt{Prog dist/12 - Kubernetes.pdf} & ``Kubernetes And Container Orchestration'' \\
+\texttt{Prog dist/14 - Terraform.pdf} & ``Terraform And Infrastructure As Code'' \\
+\texttt{Prog dist/Cloud.pdf} & ``Cloud And Infrastructure As A Service'' \\
+\texttt{Prog dist/Cloud Infrastructure as a Service.pdf} & cloud service models and infrastructure notes \\
+\texttt{Prog dist/Kafka.pdf} & ``Kafka And Event-Driven Communication'' \\
+\texttt{Prog dist/Software Architecture.pdf} & architecture vocabulary and service decomposition \\
+\texttt{Programme cours.docx} & Introduction, roadmap, and evaluation context \\
+\texttt{Projet 2025.docx} & project workbook, milestone ladder, and grading logic \\
+\texttt{Compte Google labs.xlsx} & evaluation context only; update project-delivery notes if badge expectations change \\
+\texttt{Google labs.xlsx} & evaluation context only; update project-delivery notes if badge expectations change \\
+\texttt{TPs \_ Evaluation projets.xlsx} & assessment tracking notes only \\
+\texttt{Evaluation Master cyber.docx} & programme/evaluation context only if relevant to your group \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\PanelBox{
+Update principle: keep this document as one editable source file, revise the specific module when a course file changes, and recompile the PDF. That is why the guide is structured by topic rather than by raw slide order.
+}
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+
+The distributed programming course (\emph{programmation distribuee}) is not one isolated topic. It is a chain that starts with architecture, becomes concrete through web services and service integration, becomes reproducible through Docker, becomes operable through Kubernetes and cloud infrastructure, and becomes scalable and maintainable through messaging, persistence, and infrastructure as code.
+
+The current repository already demonstrates the beginning of that chain with two services, container packaging, and service-to-service communication. The next learning steps are therefore clear: stronger orchestration, stronger persistence, stronger security, and stronger cloud automation.
+
+\end{document}

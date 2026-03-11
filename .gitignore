@@ -168,6 +168,12 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
+# LaTeX report
+report/*.aux
+report/*.log
+report/*.out
+report/*.toc
+
 # Marimo
 marimo/_static/
 marimo/_lsp/
