@@ -7,6 +7,8 @@
 *.secret
 *.pem
 *.key
+*.crt
+*.p12
 
 # ===============================
 # Python / Django
@@ -21,9 +23,12 @@ dist/
 *.so
 .pytest_cache/
 .coverage
+.coverage.*
+coverage.xml
 htmlcov/
 .mypy_cache/
 .ruff_cache/
+.tox/
 db.sqlite3
 db.sqlite3-journal
 media/
@@ -39,19 +44,17 @@ ENV/
 # Node / React / Vite
 # ===============================
 node_modules/
-services/frontend-service/node_modules/
 services/frontend-service/dist/
 services/frontend-service/.vite/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-package-lock.json.bak
 
 # ===============================
-# LaTeX (report/)
+# LaTeX build artifacts (report/)
 # ===============================
-# Core aux
+# Keep report.pdf committed — it is the deliverable handed in by e-mail.
 *.aux
 *.log
 *.out
@@ -62,8 +65,6 @@ package-lock.json.bak
 *.fdb_latexmk
 *.synctex.gz
 *.synctex(busy)
-
-# Bib / index
 *.bbl
 *.blg
 *.idx
@@ -72,26 +73,34 @@ package-lock.json.bak
 *.nav
 *.snm
 *.vrb
-
-# xelatex / latexmk
 *.xdv
 *.run.xml
 *.bcf
-
-# Build product — keep out of git, submit separately
-report/report.pdf
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
 
 # ===============================
 # Docker / Kubernetes
 # ===============================
-# Don't commit real secrets; only the example manifests
+# Only commit the example/reference manifests — never real secret values.
 k8s/*.secret.yaml
 k8s/secrets/
 *.kubeconfig
+kubeconfig
 
-# Local docker volumes / data dumps
+# Local DB / persistent volume data
 postgres_data/
 pgdata/
+pgdata-*/
+*.dump
+*.sql.gz
+
+# Docker override for dev environments
+docker-compose.override.yml
 
 # ===============================
 # Editors / IDE
@@ -100,6 +109,7 @@ pgdata/
 !.vscode/settings.json
 !.vscode/extensions.json
 .idea/
+*.iml
 *.swp
 *.swo
 *~
@@ -112,9 +122,9 @@ Thumbs.db
 desktop.ini
 
 # ===============================
-# Logs / misc
+# Misc
 # ===============================
-*.log
 logs/
 tmp/
 .cache/
+*.bak
