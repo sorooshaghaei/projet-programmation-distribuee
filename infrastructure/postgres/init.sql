@@ -1,0 +1,8 @@
+CREATE USER eventhub_event_user WITH PASSWORD 'eventhub_event_pass';
+CREATE USER eventhub_user_user WITH PASSWORD 'eventhub_user_pass';
+
+CREATE DATABASE eventhub_events OWNER eventhub_event_user;
+CREATE DATABASE eventhub_users OWNER eventhub_user_user;
+
+GRANT ALL PRIVILEGES ON DATABASE eventhub_events TO eventhub_event_user;
+GRANT ALL PRIVILEGES ON DATABASE eventhub_users TO eventhub_user_user;

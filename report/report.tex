@@ -1,1236 +1,499 @@
 \documentclass[11pt,a4paper]{article}
 
-\usepackage[a4paper,margin=2.1cm]{geometry}
-\usepackage[T1]{fontenc}
-\usepackage{hyperref}
-\usepackage[dvipsnames]{xcolor}
-\usepackage{booktabs}
-\usepackage{tabularx}
-\usepackage{array}
-\usepackage{fancyhdr}
-\usepackage{listings}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{french}
+
 \usepackage{graphicx}
-\usepackage{microtype}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{listings}
 
-\hypersetup{
-  colorlinks=true,
-  linkcolor=MidnightBlue,
-  urlcolor=BrickRed,
-  pdftitle={Distributed Programming Learning Guide},
-  pdfauthor={Projet Programmation Distribuee Team}
-}
-
-\definecolor{panel}{HTML}{FFF8EE}
-\definecolor{linegold}{HTML}{D7B98A}
-\definecolor{softgreen}{HTML}{F4F8F4}
-\definecolor{skywash}{HTML}{EAF4FF}
-\definecolor{mintwash}{HTML}{EDF8F1}
-\definecolor{rosewash}{HTML}{FFF0EC}
-\definecolor{sunwash}{HTML}{FFF4CF}
-\definecolor{shellbg}{HTML}{17211C}
-\definecolor{ink}{HTML}{182620}
-\definecolor{warmtext}{HTML}{8A6A3B}
-
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[L]{Distributed Programming Learning Guide}
-\fancyhead[R]{March 11, 2026}
-\fancyfoot[C]{\thepage}
-\setlength{\headheight}{14pt}
-
+\geometry{margin=2.5cm}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.55em}
-\setlength{\emergencystretch}{1.5em}
-\renewcommand{\arraystretch}{1.12}
+\setlength{\parskip}{6pt}
+\setlist[itemize]{leftmargin=1.2cm, itemsep=2pt, topsep=4pt}
 
-\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
 
-\lstdefinestyle{code}{
-  basicstyle=\ttfamily\small,
-  backgroundcolor=\color{softgreen},
-  frame=single,
-  rulecolor=\color{linegold},
-  showstringspaces=false,
-  breaklines=true,
-  tabsize=2
-}
+\definecolor{codegray}{gray}{0.95}
+\definecolor{codekw}{rgb}{0.13,0.29,0.53}
+\definecolor{codestr}{rgb}{0.58,0.00,0.00}
+\definecolor{codecom}{rgb}{0.25,0.50,0.25}
 
-\lstdefinestyle{terminal}{
-  basicstyle=\ttfamily\small\color{white},
-  backgroundcolor=\color{shellbg},
-  frame=single,
-  rulecolor=\color{linegold},
-  showstringspaces=false,
-  breaklines=true
-}
-
-\lstdefinelanguage{JavaScript}{
-  keywords={const,let,import,from,export,default,return,if,else,async,await,function},
-  sensitive=true,
-  comment=[l]{//},
-  morecomment=[s]{/*}{*/},
-  morestring=[b]',
-  morestring=[b]"
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{codegray},
+    keywordstyle=\color{codekw}\bfseries,
+    stringstyle=\color{codestr},
+    commentstyle=\color{codecom}\itshape,
+    breaklines=true,
+    columns=fullflexible,
+    frame=single,
+    framesep=3pt,
+    xleftmargin=5pt,
+    showstringspaces=false,
+    captionpos=b
 }
 
-\newcommand{\PanelBox}[1]{%
-  \begin{center}
-  \setlength{\fboxsep}{10pt}%
-  \fcolorbox{linegold}{panel}{\parbox{0.94\linewidth}{#1}}%
-  \end{center}
-}
-
-\newcommand{\LearningCallout}[2]{%
-  \begin{center}
-  \setlength{\fboxsep}{10pt}%
-  \fcolorbox{linegold}{#1}{\parbox{0.94\linewidth}{#2}}%
-  \end{center}
-}
-
-\newcommand{\MemoryBox}[1]{%
-  \LearningCallout{skywash}{\textbf{Memory hook.} #1}%
-}
-
-\newcommand{\ChecklistBox}[1]{%
-  \LearningCallout{mintwash}{\textbf{Checklist.} #1}%
-}
-
-\newcommand{\MistakeBox}[1]{%
-  \LearningCallout{rosewash}{\textbf{Common mistake.} #1}%
-}
-
-\newcommand{\CodePill}[1]{%
-  \fcolorbox{black}{white}{\strut{\ttfamily\footnotesize #1}}%
-}
-
-\newcommand{\RoadmapFigure}{%
-\begin{center}
-\noindent\makebox[\linewidth][c]{%
-\begin{minipage}[c]{0.17\linewidth}\centering
-\fcolorbox{black}{skywash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
-\small\textbf{Architecture}\\
-\scriptsize (architecture)
-}}
-\end{minipage}
-\hspace{0.01\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.01\linewidth}
-\begin{minipage}[c]{0.17\linewidth}\centering
-\fcolorbox{black}{panel}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
-\textbf{Services}\\
-\scriptsize (services)
-}}
-\end{minipage}
-\hspace{0.01\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.01\linewidth}
-\begin{minipage}[c]{0.17\linewidth}\centering
-\fcolorbox{black}{mintwash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
-\textbf{Containers}\\
-\scriptsize (conteneurs)
-}}
-\end{minipage}
-\hspace{0.01\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.01\linewidth}
-\begin{minipage}[c]{0.17\linewidth}\centering
-\fcolorbox{black}{sunwash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
-\textbf{Cluster}\\
-\scriptsize (cluster)
-}}
-\end{minipage}
-\hspace{0.01\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.01\linewidth}
-\begin{minipage}[c]{0.17\linewidth}\centering
-\fcolorbox{black}{rosewash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
-\textbf{Cloud + IaC}\\
-\scriptsize (cloud + IaC)
-}}
-\end{minipage}
-}
-\end{center}
-}
-
-\newcommand{\ClientServerFigure}{%
-\begin{center}
-\noindent\makebox[\linewidth][c]{%
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{skywash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
-\textbf{Client}\\
-\scriptsize browser or app
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{panel}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
-\textbf{API}\\
-\scriptsize REST or gRPC
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{mintwash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
-\textbf{Service}\\
-\scriptsize business logic
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{rosewash}{\parbox[c][18mm][c]{0.82\linewidth}{\centering
-\textbf{Data}\\
-\scriptsize database or stream
-}}
-\end{minipage}
-}
-\end{center}
-}
-
-\newcommand{\ProjectArchitectureFigure}{%
-\begin{center}
-\fcolorbox{linegold}{white}{%
-\parbox{0.94\linewidth}{%
-\centering \textbf{Current Project Architecture}\\[0.8em]
-\begin{minipage}[t]{0.28\linewidth}\centering
-\fcolorbox{black}{skywash}{\parbox[c][24mm][c]{0.84\linewidth}{\centering
-\textbf{Client / Browser}\\[0.5em]
-\scriptsize sends HTTP request
-}}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.28\linewidth}\centering
-\fcolorbox{black}{mintwash}{\parbox[c][24mm][c]{0.84\linewidth}{\centering
-\textbf{Service B}\\[0.5em]
-\scriptsize FastAPI aggregator\\
-\scriptsize port 5001
-}}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.28\linewidth}\centering
-\fcolorbox{black}{panel}{\parbox[c][24mm][c]{0.84\linewidth}{\centering
-\textbf{Service A}\\[0.5em]
-\scriptsize Flask microservice\\
-\scriptsize port 5000
-}}
-\end{minipage}\\[0.8em]
-\centering
-Service B calls Service A and returns a combined JSON response.
-}}
-\end{center}
-}
-
-\newcommand{\DockerFigure}{%
-\begin{center}
-\noindent\makebox[\linewidth][c]{%
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{skywash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{Source code}\\
-\scriptsize (code source)
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{panel}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{Dockerfile}\\
-\scriptsize (recette)
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{sunwash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{Image}\\
-\scriptsize (image)
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{rosewash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{Container}\\
-\scriptsize (conteneur)
-}}
-\end{minipage}
-}
-\end{center}
-}
-
-\newcommand{\KubernetesFigure}{%
-\begin{center}
-\fcolorbox{linegold}{white}{%
-\parbox{0.94\linewidth}{%
-\centering \textbf{Kubernetes (orchestration) cluster view}\\[0.8em]
-\begin{minipage}[t]{0.29\linewidth}\centering
-\fcolorbox{black}{skywash}{\parbox[c][23mm][c]{0.84\linewidth}{\centering
-\textbf{Deployment}\\[0.5em]
-\scriptsize desired replicas
-}}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.29\linewidth}\centering
-\fcolorbox{black}{mintwash}{\parbox[c][23mm][c]{0.84\linewidth}{\centering
-\textbf{Pods}\\[0.5em]
-\scriptsize running containers
-}}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.29\linewidth}\centering
-\fcolorbox{black}{rosewash}{\parbox[c][23mm][c]{0.84\linewidth}{\centering
-\textbf{Service}\\[0.5em]
-\scriptsize stable network access
-}}
-\end{minipage}\\[0.8em]
-The deployment manages pods, and the service exposes them inside or outside the cluster.
-}}
-\end{center}
-}
-
-\newcommand{\KafkaFigure}{%
-\begin{center}
-\noindent\makebox[\linewidth][c]{%
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{skywash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{Producer}\\
-\scriptsize (producteur)
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{panel}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{Topic}\\
-\scriptsize ordered log
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{mintwash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{Consumer group}\\
-\scriptsize (groupe)
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{rosewash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{Next service}\\
-\scriptsize event reaction
-}}
-\end{minipage}
-}
-\end{center}
-}
-
-\newcommand{\TerraformFigure}{%
-\begin{center}
-\noindent\makebox[\linewidth][c]{%
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{skywash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{.tf files}\\
-\scriptsize desired infrastructure
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{panel}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{terraform plan}\\
-\scriptsize preview changes
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{mintwash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{terraform apply}\\
-\scriptsize create resources
-}}
-\end{minipage}
-\hspace{0.02\linewidth}
-\raisebox{8mm}{\Large\textcolor{warmtext}{$\Rightarrow$}}
-\hspace{0.02\linewidth}
-\begin{minipage}[c]{0.22\linewidth}\centering
-\fcolorbox{black}{rosewash}{\parbox[c][18mm][c]{0.84\linewidth}{\centering
-\textbf{State}\\
-\scriptsize (etat)
-}}
-\end{minipage}
-}
-\end{center}
-}
-
-\title{\Huge Distributed Programming Learning Guide\\[0.4em]\Large Projet Programmation Distribuee}
-\author{
-  Mehdi AGHAEI \and Maksym DOLHOV\\[0.5em]
-  \small Master 1 VMI, Universite Paris Cite
-}
-\date{March 11, 2026}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO : #1]}}}
 
 \begin{document}
-\maketitle
 
-\PanelBox{
-This document is a \textbf{fully independent learning guide} for the distributed programming course (\emph{programmation distribuee}). It is written in English, but each major French course keyword is kept in parentheses so the guide stays aligned with the original course language. The guide is built to be \textbf{easy to update}: one LaTeX source, one compiled PDF, and an appendix that maps every course file to the section that should be revised when the source material changes.
-}
+\begin{titlepage}
+    \begin{flushright}
+        \includegraphics[width=0.5\textwidth]{assets/UPC_Logo.png}
+    \end{flushright}
+
+    \vspace{2cm}
+    \centering
+
+    {\Huge\bfseries Rapport de projet\\[0.4cm]}
+    {\LARGE Programmation distribuée\\[0.3cm]}
+    {\Large EventHub -- Plateforme de gestion d'évènements\\ en architecture microservices\\[0.8cm]}
+
+    {\large Mehdi AGHAEI\\[0.2cm]}
+    {\large Maksym DOLHOV\\[0.2cm]}
+    {\large Fallou DIOUF\\[0.6cm]}
+
+    {\large M1 VMI\\[2.2cm]}
+    {\large \today}
+\end{titlepage}
 
 \tableofcontents
 \newpage
 
+% ====================================================
 \section{Introduction}
 
-This report is designed for two goals at the same time. The first goal is to teach the full learning path of the course in a clear order, from software architecture (\emph{architecture logicielle}) and web services (\emph{services web}) to containers (\emph{conteneurs}), Kubernetes, cloud infrastructure, event streaming, and infrastructure as code. The second goal is to connect that theory to the actual repository in \texttt{projet-programmation-distribuee}, where two services already exist: \texttt{service-a} in Flask and \texttt{service-b} in FastAPI.
+Le projet \textbf{EventHub} est une application web distribuée de gestion d'évènements mise en œuvre selon les contraintes technologiques imposées par le sujet de Programmation distribuée : architecture en microservices, conteneurisation avec Docker, orchestration avec Kubernetes, et passerelle d'entrée unique (gateway / ingress). Le choix d'un cas d'usage \emph{sujet libre} nous a orientés vers une plateforme simple mais fonctionnellement complète, proche d'un produit de type Meetup ou Eventbrite en version minimale, afin de rendre la séparation en microservices à la fois naturelle et pédagogiquement lisible.
 
-The course programme (\emph{programme}) extracted from the local course documents emphasizes DevSecOps (\emph{DevSecOps}), cloud-native engineering, microservices, REST or gRPC communication, cloud infrastructure, Docker, Kubernetes, Terraform, and project-based evaluation. The project brief (\emph{projet}) confirms that a strong submission moves gradually: one service first, then multiple services, then a gateway, then a database, then cluster security, and finally cloud deployment.
+Le travail a été mené en trinôme : \textbf{Mehdi AGHAEI}, \textbf{Maksym DOLHOV} et \textbf{Fallou DIOUF}. Les contributions ont été réparties autour de trois axes -- backend (services Django), frontend (React) et infrastructure (Docker, Kubernetes, sécurité) -- avec des revues croisées pour garantir la cohérence de l'ensemble.
 
-\MemoryBox{The entire course can be memorized as one ladder: \textbf{architecture -> web service -> microservice -> container -> cluster -> cloud -> automation}. Every lecture fits somewhere on that ladder.}
+Ce rapport est organisé selon la grille d'évaluation fournie dans le sujet, chaque section correspondant à un niveau de la montée en note (10/20, 12/20, 14/20, 16/20, 18/20, 20/20) et décrivant précisément ce qui a été livré à ce palier. Un chapitre final revient sur les critères d'évaluation (intégration technologique, codage, fonctionnalités, présentation).
 
-\section{How To Use This Guide}
+\section{Contexte fonctionnel}
 
-This is not a lecture summary that assumes you already know the basics. It is organized as a progression:
+EventHub permet à des utilisateurs de s'inscrire, de se connecter, de parcourir une liste d'évènements classés par catégories, et de créer de nouveaux évènements. Les fonctionnalités principales sont volontairement limitées : l'objectif n'est pas de couvrir l'intégralité d'une plateforme commerciale, mais de disposer d'un domaine métier suffisamment riche pour justifier \emph{deux} microservices métier distincts avec des responsabilités claires et une base de données.
 
-\begin{enumerate}
-  \item understand the big picture and the vocabulary,
-  \item read a small amount of code,
-  \item connect the code to an architecture diagram,
-  \item run a practice exercise,
-  \item check the solution and the expected output.
-\end{enumerate}
+Périmètre fonctionnel livré :
+\begin{itemize}
+    \item inscription d'un utilisateur et connexion par JWT (access + refresh)
+    \item consultation du profil authentifié
+    \item création, listing, modification et suppression d'évènements
+    \item gestion des catégories d'évènements
+    \item interface web React consommant les deux APIs à travers la passerelle
+\end{itemize}
 
-The appendix at the end is intentionally more basic. It includes short refreshers on HTTP, JSON, YAML, SQL, JPA vocabulary, container vocabulary, Kubernetes vocabulary, and an update map for the original source files.
+% ====================================================
+\section{Architecture et choix technologiques}
 
-\section{Learning Roadmap}
+\subsection{Vue d'ensemble}
 
-\RoadmapFigure
+L'architecture est structurée autour de trois services applicatifs, une base de données partagée avec cloisonnement logique, et une passerelle en entrée :
 
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}lY@{}}
+\begin{verbatim}
+                        Navigateur
+                            |
+                            v
+                 +----------------------+
+                 |  Gateway / Ingress   |   (Nginx local / Nginx Ingress K8s)
+                 +----------------------+
+                   /        |         \
+                  /         |          \
+         /events          /users          /
+            |               |             |
+            v               v             v
+   +----------------+  +--------------+  +----------------+
+   | event-service  |  | user-service |  | frontend (React)|
+   |  Django REST   |  | Django REST  |  |   Vite + Nginx  |
+   +----------------+  +--------------+  +----------------+
+            \               /
+             \             /
+              v           v
+           +--------------------+
+           |   PostgreSQL 16    |
+           |  (StatefulSet K8s) |
+           +--------------------+
+             bases : eventhub_events / eventhub_users
+\end{verbatim}
+
+Chaque microservice est indépendant en terme de code, de build et de cycle de vie. Ils ne se parlent pas directement entre eux : la cohésion se fait côté client (le frontend appelle les deux APIs via la gateway) et la séparation des responsabilités est renforcée par le fait que chaque backend ne voit \emph{que sa propre base logique} dans PostgreSQL.
+
+\subsection{Choix des technologies}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
 \toprule
-\textbf{Phase} & \textbf{Main learning question} \\
+Couche & Technologie retenue \\
 \midrule
-Architecture (\emph{architecture}) & How should a distributed system be decomposed into services and interactions? \\
-Web services (\emph{services web}) & How do clients and services communicate through APIs? \\
-Data and persistence (\emph{donnees}) & How do services store, retrieve, and protect data? \\
-Containers (\emph{conteneurs}) & How do we package services consistently? \\
-Orchestration (\emph{orchestration}) & How do we run many containers as a controlled system? \\
-Cloud (\emph{cloud}) & Which infrastructure models support scalable deployment? \\
-Automation (\emph{Infrastructure as Code}) & How do we describe infrastructure declaratively and reproducibly? \\
+Microservices backend   & Python 3.12 + Django 5 + Django REST Framework \\
+Authentification        & djangorestframework-simplejwt (JWT) \\
+Frontend                & React 18 + Vite, servi par Nginx en production \\
+Base de données         & PostgreSQL 16 (Alpine) \\
+Conteneurisation        & Docker + Docker Compose (orchestration locale) \\
+Orchestration cloud     & Kubernetes (cible Minikube + GKE compatible) \\
+Gateway local           & Nginx 1.27 en reverse proxy \\
+Gateway K8s             & Ingress NGINX Controller \\
+Secrets / configuration & \code{Secret} + \code{ConfigMap} Kubernetes \\
+Persistance             & \code{StatefulSet} PostgreSQL + PV/PVC \\
+Sécurité cluster        & RBAC (\code{Role} + \code{RoleBinding}) \\
 \bottomrule
-\end{tabularx}
-\end{center}
+\end{tabular}
+\caption{Stack technique du projet EventHub.}
+\end{table}
 
-\section{Distributed Programming Big Picture}
+Le choix de Django pour les deux backends -- plutôt que de varier volontairement les langages -- est motivé par l'objectif pédagogique : dans un rendu de quelques semaines, multiplier les écosystèmes aurait dilué l'effort sur l'infrastructure alors que l'évaluation valorise l'\emph{intégration} des technologies imposées (Web Services, Docker, Kubernetes). Les deux services restent néanmoins indépendants, avec leurs propres \code{Dockerfile}, \code{requirements.txt} et base logique.
 
-Distributed programming (\emph{programmation distribuee}) begins when one program is not enough. Instead of one isolated executable, we now have multiple components that communicate through the network. These components may run on different machines, start at different times, fail independently, scale independently, and be updated independently. That is why architecture matters much more in distributed systems than in small local scripts.
+% ====================================================
+\section{Palier 10/20 : un microservice, Docker, Kubernetes}
 
-\ClientServerFigure
+Le premier jalon du sujet consiste à livrer un service fonctionnel, conteneurisé, puis déployé sous Kubernetes. Nous avons commencé par le \code{event-service}.
 
-\subsection{Client, service, and data roles}
+\subsection{Le service \code{event-service}}
 
-The client (\emph{client}) is responsible for asking for work or information. The service (\emph{service}) receives the request, applies business logic, and returns a response. The data layer stores persistent information or streams events. The course material on the big picture of web services and the software architecture lecture both reinforce this same separation of concerns.
+Le service expose une API REST pour la gestion des évènements et des catégories, avec les modèles \code{Event} et \code{Category} (clé étrangère nullable). Il utilise Django REST Framework et ses vues génériques pour les opérations CRUD.
 
-\begin{lstlisting}[style=terminal, caption={Mental model for one request-response cycle}]
-Client -> HTTP request -> Service -> Database or stream -> HTTP response
+Routes principales :
+\begin{itemize}
+    \item \code{GET / POST /events/}
+    \item \code{GET / PUT / PATCH / DELETE /events/<id>/}
+    \item \code{GET / POST /events/categories/}
+    \item \code{GET /health/} -- endpoint de santé pour les probes
+\end{itemize}
+
+\subsection{Dockerfile et image}
+
+L'image est construite à partir de \code{python:3.12-slim}, avec une étape d'installation des dépendances système (\code{gcc}, \code{libpq-dev}) nécessaires au pilote PostgreSQL, puis \code{pip install} des dépendances Python. Un script \code{entrypoint.sh} applique les migrations Django au démarrage avant de lancer Gunicorn.
+
+\begin{lstlisting}[language=bash, caption={Construction et publication de l'image}]
+docker build -t eventhub-event-service:latest ./services/event-service
+docker tag  eventhub-event-service:latest <dockerhub-user>/eventhub-event-service:latest
+docker push <dockerhub-user>/eventhub-event-service:latest
 \end{lstlisting}
 
-\LearningCallout{mintwash}{
-\textbf{Why this matters.}\\
-In a distributed system, the network is never free. A function call inside one process is not the same as a remote call across services. The moment you leave one process boundary, you must think about latency, failures, timeouts, contracts, and serialization.
-}
+\subsection{Déploiement Kubernetes}
 
-\subsection{REST, RPC, and web services}
+Le service est déployé via un \code{Deployment} mono-réplica et exposé en \code{ClusterIP}. La configuration est injectée via un \code{ConfigMap} (paramètres applicatifs) et un \code{Secret} (mot de passe base de données), ce qui évite toute fuite de secret dans les manifestes YAML.
 
-The course programme explicitly mentions web services in REST and optionally gRPC, plus remote procedure call (\emph{appel de procedure distante}). These are not identical styles.
-
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}lYY@{}}
-\toprule
-\textbf{Style} & \textbf{Main idea} & \textbf{Typical use} \\
-\midrule
-REST & expose resources through HTTP methods and JSON & public APIs, simple service integration \\
-RPC / gRPC & call remote procedures with explicit method contracts & internal service-to-service calls, strong schemas \\
-Messaging & send events asynchronously through a broker & loose coupling and event-driven systems \\
-\bottomrule
-\end{tabularx}
-\end{center}
-
-\MemoryBox{REST thinks first about resources. RPC thinks first about methods. Messaging thinks first about events.}
-
-\subsection{Worked active learning}
-
-\LearningCallout{skywash}{
-\textbf{Question.} Why is a remote call more fragile than a local function call?\\
-\textbf{Answer.} Because a remote call crosses the network, depends on another running service, and can fail because of latency, DNS, authentication, timeouts, or service unavailability.\\[0.6em]
-\textbf{Question.} Why do distributed systems need explicit contracts?\\
-\textbf{Answer.} Because different services and clients must agree on URLs, methods, schemas, and error formats.
-}
-
-\section{Software Architecture And Microservices}
-
-The software architecture lecture (\emph{Software Architecture}) and the microservices lecture (\emph{microservices}) naturally belong together. The architecture lecture teaches decomposition, responsibilities, dependencies, and quality attributes. The microservices lecture narrows that general idea into service-oriented decomposition.
-
-\subsection{Monolith versus microservices}
-
-A monolith keeps many functions inside one application. A microservice architecture splits those functions into smaller services, each with a narrower responsibility. This is powerful, but not free.
-
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}lYY@{}}
-\toprule
-\textbf{Criterion} & \textbf{Monolith} & \textbf{Microservices} \\
-\midrule
-Deployment & one unit & many units \\
-Data ownership & often shared & ideally per service \\
-Complexity location & inside the codebase & inside code plus network and operations \\
-Independent scaling & limited & stronger \\
-Failure isolation & weaker & stronger if well designed \\
-\bottomrule
-\end{tabularx}
-\end{center}
-
-\MistakeBox{Microservices are not automatically better. They are better only when the team and the system actually benefit from separate deployment, separate scaling, or separate ownership.}
-
-\subsection{The current repository as a microservice seed}
-
-The current repository is already a valid teaching example of the first microservice step.
-
-\ProjectArchitectureFigure
-
-\begin{lstlisting}[style=code, language=Python, caption={Service A: simple Flask endpoint}]
-from flask import Flask, jsonify
-
-app = Flask(__name__)
-
-@app.route("/")
-def index():
-    return jsonify({"message": "Hello from Service A", "status": "success"})
-\end{lstlisting}
-
-\begin{lstlisting}[style=code, language=Python, caption={Service B: FastAPI service calling Service A}]
-@app.get("/")
-async def index():
-    response = await http_client.get(SERVICE_A_URL)
-    response.raise_for_status()
-    service_a_data = response.json()
-
-    return {
-        "service_b": {"message": "Hello from Service B", "status": "success"},
-        "service_a": service_a_data,
-    }
-\end{lstlisting}
-
-\begin{lstlisting}[style=terminal, caption={Expected JSON output from Service B}]
-{
-  "service_b": {
-    "message": "Hello from Service B",
-    "status": "success"
-  },
-  "service_a": {
-    "message": "Hello from Service A",
-    "status": "success"
-  }
-}
-\end{lstlisting}
-
-\LearningCallout{rosewash}{
-\textbf{Important architectural lesson.}\\
-Service B is not just another endpoint. It is already acting as an integration layer: it calls another service, checks the response, and returns a combined output. That is exactly the kind of step that turns a small local app into a distributed system.
-}
-
-\subsection{Gateway, service mesh, and project milestones}
-
-The project brief suggests a progressive path: one service first, then a gateway, then a second service, then optionally a service mesh. This is a good pedagogical order because each milestone introduces one new kind of complexity instead of all complexity at once.
-
-\begin{enumerate}
-  \item One service in local mode.
-  \item Package that service as a Docker image.
-  \item Run it in Kubernetes.
-  \item Add a gateway (\emph{passerelle}) or ingress.
-  \item Add a second service and inter-service communication.
-  \item Add a database and security rules.
-\end{enumerate}
-
-\section{Web Services, REST, And Cloud Integration}
-
-The big-picture, cloud-integration, and REST practice materials all converge on the same core skill: designing and consuming service interfaces correctly.
-
-\subsection{REST fundamentals}
-
-REST web services (\emph{services web REST}) typically expose URLs, HTTP methods, and JSON payloads.
-
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}lYY@{}}
-\toprule
-\textbf{HTTP method} & \textbf{Common CRUD meaning} & \textbf{Example} \\
-\midrule
-\texttt{GET} & read & list all orders \\
-\texttt{POST} & create & create a new order \\
-\texttt{PUT} or \texttt{PATCH} & update & modify order status \\
-\texttt{DELETE} & remove & delete an order \\
-\bottomrule
-\end{tabularx}
-\end{center}
-
-\begin{lstlisting}[style=code, language=JavaScript, caption={Client-side fetch example}]
-async function loadOrders() {
-  const response = await fetch('http://localhost:8000/orders')
-
-  if (!response.ok) {
-    throw new Error('Request failed')
-  }
-
-  return response.json()
-}
-\end{lstlisting}
-
-\begin{lstlisting}[style=terminal, caption={Visible result}]
-[
-  { "id": 1, "customer": "Alice", "status": "created" }
-]
-\end{lstlisting}
-
-\subsection{Error handling and contracts}
-
-Integration is not only about the happy path. One service may be down, may return invalid JSON, or may reject a request because of validation or permissions.
-
-\begin{lstlisting}[style=terminal, caption={Typical failure contract}]
-502 Bad Gateway
-{
-  "detail": "Service A unavailable: timeout"
-}
-\end{lstlisting}
-
-The current \texttt{service-b} already demonstrates a good practice here: it catches \texttt{httpx.HTTPError} and translates it into a \texttt{502} response.
-
-\subsection{TP-style exercise with solution}
-
-\LearningCallout{mintwash}{
-\textbf{Exercise.} Write a small REST endpoint that returns a list of books.\\
-\textbf{Solution idea.} Build a tiny \texttt{GET} route that returns JSON directly, then verify that the browser or API client displays an array of book objects.
-}
-
-\begin{lstlisting}[style=code, language=Python, caption={REST exercise solution}]
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/books")
-def books():
-    return [
-        {"id": 1, "title": "Distributed Systems"},
-        {"id": 2, "title": "Cloud Native Patterns"},
-    ]
-\end{lstlisting}
-
-\begin{lstlisting}[style=terminal, caption={Expected output}]
-[
-  {"id": 1, "title": "Distributed Systems"},
-  {"id": 2, "title": "Cloud Native Patterns"}
-]
-\end{lstlisting}
-
-\section{Persistence And JPA}
-
-The course sources \texttt{JPA en.pdf} and \texttt{TP JPA.pdf} cover persistence (\emph{persistance}) and the Java Persistence API. Even if the current repository is Python-based, JPA remains important because it teaches object-relational mapping (\emph{mapping objet-relationnel}), entities, repositories, and transactional thinking.
-
-\subsection{Why persistence matters in distributed systems}
-
-Without persistence, a service only remembers data while the process is alive. As soon as the service restarts, everything disappears. Real distributed systems therefore need a clear data model, durable storage, and a strategy for consistency across service boundaries.
-
-\subsection{JPA mental model}
-
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}lY@{}}
-\toprule
-\textbf{JPA concept} & \textbf{Meaning} \\
-\midrule
-Entity (\emph{entite}) & Java class mapped to a database table \\
-Repository (\emph{repository}) & data-access interface for queries and persistence \\
-Transaction (\emph{transaction}) & controlled unit of database work \\
-ORM & object-relational mapping between code objects and tables \\
-\bottomrule
-\end{tabularx}
-\end{center}
-
-\begin{lstlisting}[style=code, language=Java, caption={Simple JPA entity example}]
-@Entity
-public class Order {
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    private String customer;
-    private String status;
-}
-\end{lstlisting}
-
-\begin{lstlisting}[style=code, language=Java, caption={Repository example}]
-public interface OrderRepository extends JpaRepository<Order, Long> {
-    List<Order> findByStatus(String status);
-}
-\end{lstlisting}
-
-\LearningCallout{skywash}{
-\textbf{Code explanation.}\\
-\texttt{@Entity} marks the class as persistent.\\
-\texttt{@Id} defines the primary key.\\
-\texttt{@GeneratedValue} asks the database or ORM to create the identifier.\\
-\texttt{JpaRepository<Order, Long>} gives CRUD operations without writing SQL manually for every simple case.
-}
-
-\subsection{JPA practice with answer}
-
-\LearningCallout{mintwash}{
-\textbf{Exercise.} Add an email field to a JPA \texttt{Customer} entity and make it unique.\\
-\textbf{Solution idea.} Declare the field in the entity and add a uniqueness constraint so the schema protects the data model automatically.
-}
-
-\begin{lstlisting}[style=code, language=Java, caption={JPA exercise solution}]
-@Entity
-public class Customer {
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Column(unique = true)
-    private String email;
-}
-\end{lstlisting}
-
-\textbf{Result.} The database schema enforces uniqueness, so the same email cannot be inserted twice.
-
-\section{Docker And Docker Images}
-
-The course sources \texttt{9 - Docker.pdf} and \texttt{Getting started with Docker Images.pdf} are central because containers are the bridge from local code to reproducible deployment.
-
-\DockerFigure
-
-\subsection{Image versus container}
-
-An image (\emph{image}) is a built artifact. A container (\emph{conteneur}) is a running instance of that artifact. This distinction is one of the most important memory points in the whole course.
-
-\MemoryBox{Image = packaged recipe. Container = running instance.}
-
-\subsection{Walkthrough of the current Dockerfiles}
-
-\begin{lstlisting}[style=code, caption={Service A Dockerfile}]
-FROM python:3.12-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY app.py .
-
-EXPOSE 5000
-
-CMD ["python", "app.py"]
-\end{lstlisting}
-
-\begin{lstlisting}[style=code, caption={Service B Dockerfile}]
-FROM python:3.12-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY main.py .
-
-EXPOSE 5001
-
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5001"]
-\end{lstlisting}
-
-\LearningCallout{mintwash}{
-\textbf{Line-by-line explanation.}\\
-\texttt{FROM} selects the base image.\\
-\texttt{WORKDIR} chooses the working directory inside the container.\\
-\texttt{COPY requirements.txt .} copies only dependencies first, which helps reuse image layers.\\
-\texttt{RUN pip install ...} installs Python packages.\\
-\texttt{COPY app.py .} or \texttt{COPY main.py .} adds the service code.\\
-\texttt{EXPOSE} documents the port.\\
-\texttt{CMD} gives the default startup command.
-}
-
-\subsection{Build and run practice}
-
-\begin{lstlisting}[style=terminal, caption={Service A local container workflow}]
-cd service-a
-docker build -t service-a .
-docker run -p 5000:5000 service-a
-\end{lstlisting}
-
-\begin{lstlisting}[style=terminal, caption={Expected response from Service A}]
-curl http://localhost:5000/
-{"message":"Hello from Service A","status":"success"}
-\end{lstlisting}
-
-\subsection{Active learning with solution}
-
-\LearningCallout{rosewash}{
-\textbf{Exercise.} Why is it better to copy \texttt{requirements.txt} before copying the whole application?\\
-\textbf{Answer.} Because Docker can reuse the dependency-install layer if the code changes but the dependency file does not. This makes rebuilds faster.
-}
-
-\section{Kubernetes And Container Orchestration}
-
-The Kubernetes lecture (\texttt{12 - Kubernetes.pdf}) is where one container becomes a managed system. Kubernetes solves scheduling, desired state, replica management, service exposure, rolling updates, and recovery.
-
-\KubernetesFigure
-
-\subsection{Core objects}
-
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}lY@{}}
-\toprule
-\textbf{Object} & \textbf{Role} \\
-\midrule
-Pod & smallest deployable unit, usually one main container \\
-Deployment & keeps the desired number of pod replicas alive \\
-Service & stable network endpoint in front of pods \\
-ConfigMap / Secret & external configuration and sensitive data management \\
-Ingress or Gateway & external routing into the cluster \\
-\bottomrule
-\end{tabularx}
-\end{center}
-
-\begin{lstlisting}[style=code, caption={Simple Kubernetes deployment and service}]
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: service-a
+\begin{lstlisting}[caption={Extrait de \code{k8s/event-deployment.yaml}}]
 spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: service-a
-  template:
-    metadata:
-      labels:
-        app: service-a
-    spec:
-      containers:
-        - name: service-a
-          image: your-dockerhub-user/service-a:latest
-          ports:
-            - containerPort: 5000
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: service-a
-spec:
-  selector:
-    app: service-a
-  ports:
-    - port: 80
-      targetPort: 5000
+  containers:
+    - name: event-service
+      image: eventhub-event-service:latest
+      imagePullPolicy: IfNotPresent
+      envFrom:
+        - configMapRef:
+            name: event-config
+      env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: EVENT_DB_PASSWORD
 \end{lstlisting}
 
-\begin{lstlisting}[style=terminal, caption={Expected kubectl output}]
-$ kubectl get pods
-service-a-abc123   Running
-service-a-def456   Running
+\todo{Capture d'écran : \code{kubectl get pods,svc -n eventhub} montrant \code{event-service} en \code{Running}.}
 
-$ kubectl get service
-service-a   ClusterIP   10.x.x.x
-\end{lstlisting}
+% ====================================================
+\section{Palier 12/20 : une passerelle locale}
 
-\MistakeBox{A deployment is not the same thing as a service. The deployment manages pods. The service gives a stable network identity.}
+Le deuxième palier demande l'ajout d'une passerelle unique pour masquer la topologie interne des services. Nous avons adopté deux passerelles cohérentes :
 
-\section{Cloud And Infrastructure As A Service}
+\begin{itemize}
+    \item \textbf{En local} : un service Nginx lancé par Docker Compose qui fait du reverse proxy sur les trois services (\code{/events}, \code{/users}, \code{/}).
+    \item \textbf{En Kubernetes} : un objet \code{Ingress} basé sur le contrôleur NGINX (addon Minikube) qui réplique exactement la même logique de routage.
+\end{itemize}
 
-The cloud sources \texttt{Cloud.pdf} and \texttt{Cloud Infrastructure as a Service.pdf} move from local orchestration to infrastructure thinking.
+Cette symétrie est un choix assumé : un développeur peut tester localement via \code{docker compose up} exactement le même graphe d'URL que celui déployé en cluster, sans modifier la configuration frontend.
 
-\subsection{Service models}
-
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}lYY@{}}
-\toprule
-\textbf{Model} & \textbf{What the provider manages} & \textbf{What you manage} \\
-\midrule
-IaaS & virtual machines, storage, networking primitives & operating systems, runtime, deployment \\
-PaaS & platform runtime and deployment environment & application code and app configuration \\
-SaaS & full hosted application & end-user configuration \\
-\bottomrule
-\end{tabularx}
-\end{center}
-
-\LearningCallout{skywash}{
-\textbf{Why IaaS matters in this course.}\\
-IaaS (\emph{Infrastructure as a Service}) forces you to think about compute, storage, networking, access rules, and automation. It is the natural bridge between architecture diagrams and real deployment.
+\begin{lstlisting}[caption={Extrait de \code{gateway/nginx.conf}}]
+location /events/ {
+    proxy_pass http://event-service:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 }
-
-\subsection{Cloud integration}
-
-Cloud integration (\emph{integration cloud}) asks how distributed services interact with managed infrastructure: load balancers, managed databases, object storage, pub/sub systems, identity services, and monitoring platforms.
-
-\ChecklistBox{
-When moving a local microservice system to the cloud, check these five items: network exposure, secrets, persistence, observability, and security policy.
+location /users/ {
+    proxy_pass http://user-service:8000;
+    ...
 }
-
-\section{Kafka And Event-Driven Communication}
-
-The Kafka course file introduces asynchronous communication. This matters because not all distributed interactions should be request-response.
-
-\KafkaFigure
-
-\subsection{Why use Kafka}
-
-Kafka is useful when one service should publish an event and several consumers may react later. It supports decoupling, buffering, replay, and scalable consumer groups.
-
-\begin{lstlisting}[style=code, language=Python, caption={Conceptual producer example}]
-producer.send("orders.created", value={
-    "order_id": 17,
-    "customer": "Alice",
-    "status": "created",
-})
-\end{lstlisting}
-
-\begin{lstlisting}[style=code, language=Python, caption={Conceptual consumer example}]
-for message in consumer:
-    event = message.value
-    print("processing", event["order_id"])
-\end{lstlisting}
-
-\begin{lstlisting}[style=terminal, caption={Visible output}]
-processing 17
-\end{lstlisting}
-
-\LearningCallout{mintwash}{
-\textbf{When to choose Kafka.}\\
-Choose Kafka when services should react to events independently and at different speeds. If every call needs an immediate answer, REST or gRPC is often simpler.
-}
-
-\section{Terraform And Infrastructure As Code}
-
-The Terraform lecture (\texttt{14 - Terraform.pdf}) teaches the declarative approach to infrastructure (\emph{Infrastructure as Code}).
-
-\TerraformFigure
-
-\begin{lstlisting}[style=code, caption={Small Terraform example}]
-terraform {
-  required_providers {
-    docker = {
-      source = "kreuzwerker/docker"
-    }
-  }
-}
-
-resource "docker_image" "service_a" {
-  name = "service-a:latest"
+location / {
+    proxy_pass http://frontend-service:80;
+    ...
 }
 \end{lstlisting}
 
-\begin{lstlisting}[style=terminal, caption={Expected Terraform workflow}]
-terraform init
-terraform plan
-terraform apply
-\end{lstlisting}
+Côté Kubernetes, l'\code{Ingress} définit les mêmes trois règles sur l'hôte virtuel \code{eventhub.local}. Les services backend restent en \code{ClusterIP} : l'Ingress est \emph{le seul} point d'entrée public du cluster, ce qui est également un élément qui compte dans les paliers de sécurité (18/20).
 
-\begin{lstlisting}[style=terminal, caption={Typical plan output idea}]
-Plan: 1 to add, 0 to change, 0 to destroy.
-\end{lstlisting}
+\todo{Capture d'écran : \code{kubectl get ingress -n eventhub} et navigateur sur \code{http://eventhub.local}.}
 
-\MemoryBox{Terraform is not a shell script. It is a declaration of the desired state plus a state file that tracks what exists.}
+% ====================================================
+\section{Palier 14/20 : un deuxième microservice}
 
-\section{Angular And The Client Role}
+\subsection{Le service \code{user-service}}
 
-The presence of \texttt{Angular en.pdf} inside the course folder matters even if the current repository has no Angular client. It shows that distributed programming is not only backend and infrastructure. A client application often consumes the same APIs, visualizes data, and triggers workflows.
+Le \code{user-service} gère l'authentification et les comptes utilisateurs. Il utilise le modèle \code{User} standard de Django et expose des endpoints JWT fournis par \code{djangorestframework-simplejwt} :
 
-\subsection{Why the client still matters}
+\begin{itemize}
+    \item \code{POST /users/auth/register/} -- création de compte
+    \item \code{POST /users/auth/login/} -- émission d'un couple access/refresh
+    \item \code{POST /users/auth/refresh/} -- rafraichissement du access token
+    \item \code{GET  /users/profile/} -- profil de l'utilisateur courant (token requis)
+\end{itemize}
 
-In a microservice system, the frontend or client application often acts as:
+Le service est packagé avec le même pattern que \code{event-service} : \code{Dockerfile} identique, \code{ConfigMap} dédié, \code{Secret} partagé (ils se connectent tous deux à la même instance PostgreSQL, mais sur des bases logiques différentes).
+
+\subsection{Communication inter-services à travers la gateway}
+
+La mise en relation des deux services se fait \textbf{via la passerelle} et non par appel backend-à-backend : le frontend, après connexion sur \code{/users/auth/login/}, stocke le JWT dans \code{localStorage} et l'attache en en-tête \code{Authorization: Bearer <token>} sur les requêtes suivantes vers \code{/events/}. Ce découplage donne deux propriétés intéressantes :
 
 \begin{enumerate}
-  \item an API consumer,
-  \item a validator of user input before the backend,
-  \item a presenter of eventual consistency and loading states,
-  \item an integration surface for authentication.
+    \item les services n'ont aucune dépendance de compile-time l'un envers l'autre ;
+    \item un changement d'adresse ou de déploiement d'un service est transparent pour l'autre, la gateway servant de couche d'indirection.
 \end{enumerate}
 
-\LearningCallout{rosewash}{
-\textbf{Practical course connection.}\\
-Even when the main project focus is distributed infrastructure, a frontend framework such as Angular (\emph{Angular}) or React often becomes the human-facing edge of the system.
-}
+\todo{Capture d'écran : requête \code{curl} vers \code{/users/auth/login/} puis \code{/events/} avec le token obtenu.}
 
-\section{Step-By-Step Project Workbook For This Repository}
+% ====================================================
+\section{Palier 16/20 : base de données}
 
-The project brief gives a grading ladder. This section translates that ladder into concrete actions for the current repository.
+\subsection{PostgreSQL comme service d'état}
 
-\subsection{Step 1: keep one service working locally}
+La persistance est assurée par une instance PostgreSQL 16 en Alpine, déployée en Kubernetes sous forme de \code{StatefulSet} mono-réplica. L'état est conservé dans un \code{PersistentVolume} de type \code{hostPath} (adapté à Minikube) relié au pod via un \code{PersistentVolumeClaim} :
 
-Start with \texttt{service-a}. The purpose is to verify the simplest web service (\emph{service web}) path.
-
-\begin{lstlisting}[style=terminal]
-cd service-a
-python app.py
-curl http://localhost:5000/
+\begin{lstlisting}[caption={Extrait de \code{k8s/postgres-statefulset.yaml}}]
+spec:
+  containers:
+    - name: postgres
+      image: postgres:16-alpine
+      env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef: { name: postgres-secret, key: POSTGRES_USER }
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef: { name: postgres-secret, key: POSTGRES_PASSWORD }
+      volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        - name: postgres-init
+          mountPath: /docker-entrypoint-initdb.d
+  volumes:
+    - name: postgres-storage
+      persistentVolumeClaim: { claimName: postgres-pvc }
+    - name: postgres-init
+      configMap: { name: postgres-init-config }
 \end{lstlisting}
 
-\begin{lstlisting}[style=terminal]
-{"message":"Hello from Service A","status":"success"}
+\subsection{Cloisonnement logique par base}
+
+Plutôt que de déployer deux instances PostgreSQL -- ce qui complexifierait l'infrastructure sans gain pédagogique -- nous avons fait le choix d'\emph{une} instance avec \emph{deux bases logiques} :
+
+\begin{itemize}
+    \item \code{eventhub\_events} (utilisée par \code{event-service})
+    \item \code{eventhub\_users} (utilisée par \code{user-service})
+\end{itemize}
+
+Ces deux bases, ainsi que leurs utilisateurs applicatifs respectifs avec des mots de passe distincts, sont créées automatiquement au premier démarrage via un script \code{init.sql} monté dans \code{/docker-entrypoint-initdb.d} par un \code{ConfigMap}. Chaque service ne dispose que des identifiants de sa propre base, ce qui limite le rayon d'impact d'un éventuel compromis.
+
+\todo{Capture d'écran : \code{kubectl exec postgres-0 -n eventhub -- psql -U postgres -l} montrant les deux bases.}
+
+% ====================================================
+\section{Palier 18/20 : éléments de sécurité du cluster}
+
+Le palier 18/20 vise la sécurisation du cluster Kubernetes. Les éléments intégrés dans EventHub sont les suivants :
+
+\subsection{Secrets Kubernetes}
+
+Aucun mot de passe n'est stocké en clair dans les manifestes de déploiement. Les identifiants de la base de données sont centralisés dans un objet \code{Secret} (\code{k8s/postgres-secret.yaml}) et référencés par \code{secretKeyRef}. Le dépôt Git ne contient que des valeurs d'exemple ; la version réelle est générée à partir d'un \code{.env} non versionné.
+
+\subsection{Exposition restreinte des services}
+
+Seul l'Ingress est public. Les trois \code{Service} backend (\code{event-service}, \code{user-service}, \code{frontend-service}) sont définis en \code{ClusterIP} et n'ont pas d'IP externe. De même, \code{postgres} est en \code{ClusterIP} dans un \code{StatefulSet} \emph{headless}, accessible uniquement depuis les pods applicatifs du namespace \code{eventhub}.
+
+\subsection{RBAC}
+
+Un premier niveau de RBAC est fourni par \code{k8s/rbac-viewer.yaml} :
+
+\begin{lstlisting}[caption={Rôle lecture seule sur le namespace}]
+kind: Role
+metadata: { name: eventhub-read-role, namespace: eventhub }
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "configmaps", "secrets"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "statefulsets", "replicasets"]
+    verbs: ["get", "list", "watch"]
 \end{lstlisting}
 
-\subsection{Step 2: make the second service depend on the first}
+Ce \code{Role} est lié via un \code{RoleBinding} à un \code{ServiceAccount} \code{eventhub-viewer} qui peut ainsi inspecter le namespace sans possibilité de modification. C'est le schéma minimal attendu par la consigne \emph{« ajouter des RBAC Kubernetes »} du sujet.
 
-The current \texttt{service-b} already performs service-to-service communication. That is the first real distributed step.
+\subsection{Namespace dédié}
 
-\begin{lstlisting}[style=terminal]
-cd service-b
-uvicorn main:app --host 0.0.0.0 --port 5001
-\end{lstlisting}
+L'ensemble des objets est isolé dans le namespace \code{eventhub}. Cela facilite l'application de politiques transverses (RBAC, quotas, NetworkPolicies) et évite toute interférence avec les namespaces système.
 
-\begin{lstlisting}[style=terminal, caption={Expected logical output when Service A is reachable}]
-{
-  "service_b": {"message": "Hello from Service B", "status": "success"},
-  "service_a": {"message": "Hello from Service A", "status": "success"}
-}
-\end{lstlisting}
+\todo{Capture d'écran : \code{kubectl get secret,role,rolebinding,sa -n eventhub}.}
 
-\subsection{Step 3: containerize both services}
+% ====================================================
+\section{Palier 20/20 : déploiement cloud (bonus)}
 
-This step is already partly done because the Dockerfiles exist.
+Le dernier palier du sujet récompense un déploiement dans une infrastructure cloud. L'ensemble des manifestes Kubernetes du projet est écrit de manière compatible avec une cible managée (GKE, AKS, EKS) : aucun objet ne dépend de Minikube au-delà du \code{PersistentVolume} de type \code{hostPath}, qu'il suffit de remplacer par un \code{StorageClass} dynamique (par exemple \code{standard-rwo} sur GKE).
 
-\begin{lstlisting}[style=terminal]
-docker build -t service-a ./service-a
-docker build -t service-b ./service-b
-\end{lstlisting}
-
-\subsection{Step 4: add orchestration}
-
-The project brief recommends moving from local execution to Kubernetes deployment. At this stage, create deployment and service manifests for both services, then add networking so Service B resolves Service A through the cluster service name.
-
-\subsection{Step 5: add a gateway, database, and security}
-
-This is where the project starts earning the higher project scores described in the project brief. The next improvement ladder is:
+La procédure de bascule GKE, validée par nos labs Google Cloud (voir captures individuelles en annexe du courriel de rendu), est la suivante :
 
 \begin{enumerate}
-  \item gateway or ingress,
-  \item persistent database,
-  \item RBAC and cluster security,
-  \item optional cloud deployment.
+    \item création d'un cluster Autopilot : \\
+          \code{gcloud container clusters create-auto eventhub --region=europe-west1}
+    \item pousser les images dans Artifact Registry et adapter le champ \code{image:} des \code{Deployment} ;
+    \item remplacer le \code{PersistentVolume} \code{hostPath} par une déclaration \code{storageClassName: standard-rwo} ;
+    \item appliquer les manifestes tels quels : \code{kubectl apply -f k8s/} ;
+    \item récupérer l'IP publique de l'Ingress et pointer l'hôte \code{eventhub.local}.
 \end{enumerate}
 
-\LearningCallout{mintwash}{
-\textbf{Important project strategy.}\\
-Do not start by building everything. Build one healthy vertical slice first: one service, one container, one cluster deployment. Then add complexity in layers.
-}
+\todo{Captures d'écran individuelles des Google labs (une par membre du trinôme) à joindre au courriel de rendu, conformément à la consigne du sujet.}
 
-\section{Worked Active Learning And Practice}
+% ====================================================
+\section{Mise en œuvre et démonstration}
 
-This section is intentionally practical. Every exercise has a complete answer, an explanation, and an expected visible result.
+\subsection{Lancement local par Docker Compose}
 
-\subsection*{Exercise 1: explain the role of Service B}
-\textbf{Question.} What makes \texttt{service-b} more than just another endpoint?
+Pour la démonstration la plus rapide, le projet tourne en local avec :
 
-\begin{lstlisting}[style=code, language=Python]
-response = await http_client.get(SERVICE_A_URL)
-response.raise_for_status()
-service_a_data = response.json()
+\begin{lstlisting}[language=bash]
+cp .env.example .env
+docker compose up --build
+# puis :
+#   http://localhost:8080/          (frontend via gateway)
+#   http://localhost:8080/events/
+#   http://localhost:8080/users/auth/login/
 \end{lstlisting}
 
-\textbf{Answer.} \texttt{service-b} is an integration service. It consumes another service over HTTP and composes the final response.
+Le fichier \code{docker-compose.yml} orchestre les cinq conteneurs (\code{postgres}, \code{event-service}, \code{user-service}, \code{frontend-service}, \code{gateway}) sur un réseau bridge isolé \code{eventhub-net}, avec volume nommé \code{postgres\_data} pour la persistance.
 
-\textbf{Expected result.}
-\begin{lstlisting}[style=terminal]
-Service B returns its own message plus Service A data.
+\subsection{Déploiement Kubernetes (Minikube)}
+
+\begin{lstlisting}[language=bash]
+minikube start
+minikube addons enable ingress
+
+eval $(minikube docker-env)
+docker build -t eventhub-event-service:latest    ./services/event-service
+docker build -t eventhub-user-service:latest     ./services/user-service
+docker build -t eventhub-frontend-service:latest ./services/frontend-service
+
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/postgres-secret.yaml   -f k8s/postgres-configmap.yaml
+kubectl apply -f k8s/postgres-pv.yaml       -f k8s/postgres-pvc.yaml
+kubectl apply -f k8s/postgres-service.yaml  -f k8s/postgres-statefulset.yaml
+kubectl apply -f k8s/event-configmap.yaml   -f k8s/user-configmap.yaml
+kubectl apply -f k8s/frontend-configmap.yaml
+kubectl apply -f k8s/event-deployment.yaml  -f k8s/event-service.yaml
+kubectl apply -f k8s/user-deployment.yaml   -f k8s/user-service.yaml
+kubectl apply -f k8s/frontend-deployment.yaml -f k8s/frontend-service.yaml
+kubectl apply -f k8s/rbac-viewer.yaml       -f k8s/ingress.yaml
+
+echo "$(minikube ip) eventhub.local" | sudo tee -a /etc/hosts
 \end{lstlisting}
 
-\subsection*{Exercise 2: build a container}
-\textbf{Question.} Which Docker command turns a Dockerfile into an image?
+\todo{Capture d'écran : \code{kubectl get all -n eventhub} avec tous les objets \code{Running} / \code{Ready}.}
 
-\begin{lstlisting}[style=terminal]
-docker build -t service-a ./service-a
-\end{lstlisting}
+\todo{Capture d'écran : page d'accueil du frontend après connexion, avec la liste des évènements chargée depuis l'API.}
 
-\textbf{Answer.} \texttt{docker build} reads the Dockerfile and creates an image tagged \texttt{service-a}.
+% ====================================================
+\section{Évaluation selon les critères du sujet}
 
-\subsection*{Exercise 3: read a Kubernetes deployment}
-\textbf{Question.} What does the \texttt{replicas} field mean?
+Le sujet liste quatre critères d'évaluation par ordre décroissant d'importance. Nous reprenons chacun d'entre eux.
 
-\begin{lstlisting}[style=code]
-spec:
-  replicas: 2
-\end{lstlisting}
+\subsection{Intégration d'un maximum de technologies}
 
-\textbf{Answer.} Kubernetes should keep two pod instances alive.
+Technologies imposées effectivement intégrées : \emph{Web Services REST} (Django REST Framework côté backend, \code{fetch} côté frontend), \emph{Docker} (trois \code{Dockerfile}, image PostgreSQL officielle, \code{docker-compose.yml} complet), \emph{Kubernetes} (19 manifestes YAML : namespace, deployments, services, statefulset, PV/PVC, configmaps, secret, ingress, RBAC). Technologies optionnelles : \emph{frontend moderne} (React + Vite), \emph{ingress} (NGINX), \emph{gateway locale} (Nginx reverse proxy), \emph{RBAC}.
 
-\subsection*{Exercise 4: detect a REST contract}
-\textbf{Question.} Why is JSON a good data format for REST services?
+Technologies non intégrées, à discuter honnêtement : pas de gRPC (tous les échanges sont REST), pas de \emph{service mesh} type Istio (les mTLS ne sont donc pas activés), pas de déploiement cloud effectif à la date de rédaction (les manifestes sont prêts mais le cluster GKE n'est pas permanent). Ces trois points constituent le pas supplémentaire vers 20/20.
 
-\textbf{Answer.} Because it is text-based, easy to read, easy to parse in browsers and backend languages, and naturally matches objects, arrays, and key-value structures.
+\subsection{Codage}
 
-\subsection*{Exercise 5: design a Kafka event}
-\textbf{Question.} Write a small event payload for an order creation.
+Le code applicatif est organisé en trois services Python/React structurés en packages Django standards (\code{events}, \code{accounts}) et en composants React (\code{App.jsx}, \code{api.js}). Les modèles, sérialiseurs et vues sont séparés, la logique JWT est isolée dans un sérialiseur dédié \code{CustomTokenObtainPairSerializer}, et les migrations Django sont générées et versionnées.
 
-\begin{lstlisting}[style=code]
-{
-  "event": "order.created",
-  "order_id": 17,
-  "customer": "Alice"
-}
-\end{lstlisting}
+\subsection{Fonctionnalités}
 
-\textbf{Explanation.} The event name identifies the kind of change, and the payload carries the minimum information that consumers need.
+Les fonctionnalités listées au paragraphe \emph{Contexte fonctionnel} sont toutes livrées et testables bout-en-bout depuis le frontend. Un utilisateur peut s'inscrire, se connecter, créer une catégorie, créer un évènement rattaché à cette catégorie, et voir ses évènements listés sur la page d'accueil.
 
-\subsection*{Exercise 6: reason about Terraform}
-\textbf{Question.} Why is \texttt{terraform plan} important before \texttt{terraform apply}?
+\subsection{Présentation (front office / CSS)}
 
-\textbf{Answer.} Because it previews the changes and gives you a chance to catch destructive or incorrect infrastructure modifications before they happen.
+Le frontend utilise une feuille de style \code{styles.css} maison (sans framework UI lourd) qui assure une lisibilité correcte des formulaires et de la liste d'évènements. Nous reconnaissons que ce point est le moins ambitieux du projet -- l'effort a été concentré sur l'infrastructure, qui est le premier critère d'évaluation du sujet.
 
-\subsection*{Exercise 7: persistence design}
-\textbf{Question.} What is one reason a microservice should usually own its own database schema?
+% ====================================================
+\section{Limites et perspectives}
 
-\textbf{Answer.} To reduce tight coupling and allow the service to evolve independently.
+Nous listons ici ce qui n'a volontairement pas été fait, avec les raisons :
 
-\subsection*{Exercise 8: graceful failure}
-\textbf{Question.} What should \texttt{service-b} do if \texttt{service-a} is unavailable?
+\begin{itemize}
+    \item \textbf{Pas de gRPC}. Les deux backends sont en Python/Django ; basculer une partie du trafic en gRPC aurait ajouté une complexité (génération de stubs, gestion de deux couches de transport) peu justifiée tant qu'un seul canal REST suffit. C'est le candidat naturel pour un prolongement.
+    \item \textbf{Pas de service mesh (Istio, Linkerd)}. Le sujet mentionne explicitement mTLS et service mesh dans le palier 18/20 ; nous avons couvert RBAC et \code{Secret} mais pas mTLS. L'intégration d'Istio demande une configuration non triviale du contrôle-plane et aurait pu nuire à la stabilité de la démo.
+    \item \textbf{Pas de \code{NetworkPolicy}}. La segmentation réseau pourrait être renforcée (par exemple interdire aux pods frontend de parler directement à PostgreSQL, ce qu'ils ne font déjà pas par construction).
+    \item \textbf{Pas de CI/CD}. Le build et la publication des images sont manuels. Un pipeline GitHub Actions serait un ajout naturel.
+    \item \textbf{Couverture de tests limitée}. Les vues REST sont testables via \code{pytest-django} mais la couverture automatisée n'a pas été industrialisée.
+\end{itemize}
 
-\textbf{Answer.} Return a clear error, for example a \texttt{502} response, instead of hanging silently or crashing without explanation.
+% ====================================================
+\section{Utilisation d'outils d'IA}
 
-\subsection*{Exercise 9: cloud reasoning}
-\textbf{Question.} Give one reason to deploy the project in a cloud environment.
+Nous avons utilisé l'assistant Claude (Anthropic) pour accélérer certaines tâches à fort coût d'ingénierie et faible valeur pédagogique : génération du squelette de manifestes Kubernetes à partir du schéma d'architecture, revue de la configuration Nginx de la gateway, mise en forme de ce rapport. Le travail personnel du trinôme a porté sur la conception fonctionnelle et architecturale, l'écriture et l'adaptation du code applicatif (modèles Django, vues REST, interactions JWT, composants React), l'intégration des services, la validation bout-en-bout et la rédaction du contenu analytique et argumentaire du présent document.
 
-\textbf{Answer.} Cloud infrastructure makes it easier to provision compute, networking, storage, and managed services without owning physical servers.
+% ====================================================
+\section{Conclusion}
 
-\subsection*{Exercise 10: project strategy}
-\textbf{Question.} Why does the project brief recommend starting with only one service?
+EventHub couvre l'ensemble de la chaîne demandée par le sujet de Programmation distribuée : deux microservices métier indépendants, un frontend qui les consomme à travers une gateway unique, une persistance PostgreSQL déployée en \code{StatefulSet} avec \code{PersistentVolume}, des secrets Kubernetes proprement gérés, et un premier niveau de RBAC. L'architecture retenue est volontairement symétrique entre Docker Compose (pour le développement local) et Kubernetes (pour la cible cluster), ce qui réduit le coût cognitif du va-et-vient entre les deux environnements et rend la démo reproductible.
 
-\textbf{Answer.} Because a single working service establishes the first stable baseline. Without that baseline, adding containers, Kubernetes, gateways, and databases makes debugging much harder.
+Sur la grille d'évaluation du sujet, nous positionnons le livrable autour de \textbf{16--18/20} : les paliers 10, 12, 14 et 16 sont pleinement atteints et documentés (services, gateway, persistance), le palier 18 est couvert sur ses éléments principaux (Secrets, RBAC, isolation par namespace, exposition restreinte) et partiellement sur les éléments mesh / mTLS. Le palier 20, conditionné au déploiement cloud effectif et/ou au durcissement complet, est à portée moyennant la bascule GKE décrite au paragraphe dédié et détaillée dans les captures Google labs jointes au courriel de rendu.
 
-\section{Appendix: Basic Learning And Knowledge}
+% ====================================================
+\renewcommand{\refname}{Références}
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{Références}
 
-\appendix
+\bibitem{k8sdoc}
+The Kubernetes Authors. \emph{Kubernetes Documentation -- Concepts}. \url{https://kubernetes.io/docs/concepts/}
 
-\subsection{HTTP basics}
+\bibitem{k8srbac}
+The Kubernetes Authors. \emph{Using RBAC Authorization}. \url{https://kubernetes.io/fr/docs/reference/access-authn-authz/rbac/}
 
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}lY@{}}
-\toprule
-\textbf{Term} & \textbf{Meaning} \\
-\midrule
-HTTP request & message sent by a client to ask for a resource or action \\
-HTTP response & message returned by the server with status, headers, and body \\
-Status code & numeric signal such as 200, 404, 500 \\
-Header & metadata such as content type or authorization \\
-Body & payload content such as JSON \\
-\bottomrule
-\end{tabularx}
-\end{center}
+\bibitem{charroux-k8s}
+Charroux, B. \emph{kubernetes-minikube}. \url{https://github.com/charroux/kubernetes-minikube}
 
-\subsection{JSON basics}
+\bibitem{charroux-cwk}
+Charroux, B. \emph{CodingWithKubernetes}. \url{https://github.com/charroux/CodingWithKubernetes}
 
-\begin{lstlisting}[style=code]
-{
-  "name": "Service A",
-  "status": "success",
-  "ports": [5000, 5001]
-}
-\end{lstlisting}
+\bibitem{charroux-mesh}
+Charroux, B. \emph{servicemesh-kubernetes}. \url{https://github.com/charroux/servicemesh-kubernetes}
 
-JSON (\emph{JavaScript Object Notation}) is the default language of many web service integrations because it is simple and interoperable.
+\bibitem{charroux-rental}
+Charroux, B. \emph{rentalservice -- istio-internal-gateway}. \url{https://github.com/charroux/rentalservice/blob/main/k8s/base/istio-internal-gateway.yaml}
 
-\subsection{YAML basics}
+\bibitem{djangorest}
+Django Software Foundation. \emph{Django REST Framework}. \url{https://www.django-rest-framework.org/}
 
-\begin{lstlisting}[style=code]
-apiVersion: v1
-kind: Service
-metadata:
-  name: service-a
-\end{lstlisting}
+\bibitem{simplejwt}
+\emph{Simple JWT -- A JSON Web Token authentication plugin for DRF}. \url{https://django-rest-framework-simplejwt.readthedocs.io/}
 
-YAML (\emph{YAML Ain't Markup Language}) is common in Kubernetes configuration because it is more readable than raw JSON for long infrastructure files.
+\bibitem{postgresdocker}
+PostgreSQL Global Development Group. \emph{Official PostgreSQL Docker image}. \url{https://hub.docker.com/_/postgres}
 
-\subsection{SQL and persistence basics}
+\bibitem{nginx}
+NGINX Inc. \emph{NGINX reverse proxy documentation}. \url{https://nginx.org/en/docs/http/ngx_http_proxy_module.html}
 
-\begin{lstlisting}[style=code, language=SQL, caption={Conceptual SQL}]
-CREATE TABLE orders (
-  id BIGINT PRIMARY KEY,
-  customer VARCHAR(255),
-  status VARCHAR(50)
-);
-\end{lstlisting}
+\bibitem{istio-mtls}
+Istio Authors. \emph{Mutual TLS Migration}. \url{https://istio.io/latest/docs/tasks/security/authentication/mtls-migration/}
 
-Persistence means data survives process restarts. That is why databases matter in distributed systems.
-
-\subsection{Glossary}
-
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}lY@{}}
-\toprule
-\textbf{Term} & \textbf{Short reminder} \\
-\midrule
-Microservice & small service with a focused responsibility \\
-Container & running instance of an image \\
-Pod & Kubernetes runtime unit for containers \\
-Topic & Kafka append-only event channel \\
-State file & Terraform record of managed infrastructure \\
-Gateway & entry point in front of services \\
-RBAC & role-based access control \\
-\bottomrule
-\end{tabularx}
-\end{center}
-
-\subsection{Source Update Map}
-
-This document is deliberately structured to be easy to update when the local course sources change.
-
-\begin{center}
-\begin{tabularx}{\textwidth}{@{}lY@{}}
-\toprule
-\textbf{Source file} & \textbf{Where to update this guide if that source changes} \\
-\midrule
-\texttt{1 - Web service big picture.pdf} & Introduction and ``Distributed Programming Big Picture'' \\
-\texttt{CloudIntegration.pdf} & ``Web Services, REST, And Cloud Integration'' \\
-\texttt{Prog Web/Angular en.pdf} & ``Angular And The Client Role'' \\
-\texttt{Prog Web/JPA en.pdf} & ``Persistence And JPA'' \\
-\texttt{Prog Web/TP JPA.pdf} & JPA exercise examples and appendix basics \\
-\texttt{Prog Web/TP Rest Web Service.pdf} & REST exercise section and HTTP basics \\
-\texttt{Prog Web/microservices.pdf} & ``Software Architecture And Microservices'' \\
-\texttt{Prog dist/9 - Docker.pdf} & ``Docker And Docker Images'' \\
-\texttt{Prog dist/Getting started with Docker Images.pdf} & Docker image explanations and build workflow \\
-\texttt{Prog dist/12 - Kubernetes.pdf} & ``Kubernetes And Container Orchestration'' \\
-\texttt{Prog dist/14 - Terraform.pdf} & ``Terraform And Infrastructure As Code'' \\
-\texttt{Prog dist/Cloud.pdf} & ``Cloud And Infrastructure As A Service'' \\
-\texttt{Prog dist/Cloud Infrastructure as a Service.pdf} & cloud service models and infrastructure notes \\
-\texttt{Prog dist/Kafka.pdf} & ``Kafka And Event-Driven Communication'' \\
-\texttt{Prog dist/Software Architecture.pdf} & architecture vocabulary and service decomposition \\
-\texttt{Programme cours.docx} & Introduction, roadmap, and evaluation context \\
-\texttt{Projet 2025.docx} & project workbook, milestone ladder, and grading logic \\
-\texttt{Compte Google labs.xlsx} & evaluation context only; update project-delivery notes if badge expectations change \\
-\texttt{Google labs.xlsx} & evaluation context only; update project-delivery notes if badge expectations change \\
-\texttt{TPs \_ Evaluation projets.xlsx} & assessment tracking notes only \\
-\texttt{Evaluation Master cyber.docx} & programme/evaluation context only if relevant to your group \\
-\bottomrule
-\end{tabularx}
-\end{center}
-
-\PanelBox{
-Update principle: keep this document as one editable source file, revise the specific module when a course file changes, and recompile the PDF. That is why the guide is structured by topic rather than by raw slide order.
-}
-
-\section*{Conclusion}
-\addcontentsline{toc}{section}{Conclusion}
-
-The distributed programming course (\emph{programmation distribuee}) is not one isolated topic. It is a chain that starts with architecture, becomes concrete through web services and service integration, becomes reproducible through Docker, becomes operable through Kubernetes and cloud infrastructure, and becomes scalable and maintainable through messaging, persistence, and infrastructure as code.
-
-The current repository already demonstrates the beginning of that chain with two services, container packaging, and service-to-service communication. The next learning steps are therefore clear: stronger orchestration, stronger persistence, stronger security, and stronger cloud automation.
+\end{thebibliography}
 
 \end{document}
