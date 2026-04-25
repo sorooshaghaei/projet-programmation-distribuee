@@ -121,3 +121,23 @@ button:hover {
   max-height: 600px;
   overflow: auto;
 }
+
+.event-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.event-actions button {
+  width: auto;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+}
+
+.btn-danger {
+  background: #dc2626;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}

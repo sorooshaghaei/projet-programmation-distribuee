@@ -70,3 +70,16 @@ export async function createEvent(payload) {
   })
   return response.json()
 }
+
+export async function updateEvent(id, payload) {
+  const response = await fetch(`/events/${id}/`, {
+    method: 'PATCH',
+    headers: buildHeaders(),
+    body: JSON.stringify(payload),
+  })
+  return response.json()
+}
+
+export async function deleteEvent(id) {
+  await fetch(`/events/${id}/`, { method: 'DELETE' })
+}

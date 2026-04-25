@@ -6,6 +6,8 @@ import {
   fetchCategories,
   fetchEvents,
   createEvent,
+  updateEvent,
+  deleteEvent,
   setTokens,
   clearTokens,
   getAccessToken,
@@ -43,6 +45,7 @@ export default function App() {
   const [categories, setCategories] = useState([])
   const [profile, setProfile] = useState(null)
   const [message, setMessage] = useState('')
+  const [editingEvent, setEditingEvent] = useState(null)
 
   useEffect(() => {
     loadEvents()
@@ -114,6 +117,43 @@ export default function App() {
     clearTokens()
     setProfile(null)
     setMessage('Logged out')
+  }
+
+  async function handleDeleteEvent(id) {
+    await deleteEvent(id)
+    setMessage('Event deleted')
+    await loadEvents()
+  }
+
+  function handleEditStart(item) {
+    setEditingEvent({
+      id: item.id,
+      title: item.title,
+      description: item.description || '',
+      category_id: item.category?.id || '',
+      start_date: item.start_date ? item.start_date.slice(0, 16) : '',
+      end_date: item.end_date ? item.end_date.slice(0, 16) : '',
+      location: item.location,
+      capacity: item.capacity,
+      is_public: item.is_public,
+    })
+  }
+
+  async function handleEditSave(e) {
+    e.preventDefault()
+    const { id, ...payload } = editingEvent
+    const result = await updateEvent(id, {
+      ...payload,
+      category_id: payload.category_id ? Number(payload.category_id) : null,
+      capacity: Number(payload.capacity),
+    })
+    if (result.id) {
+      setMessage('Event updated')
+      setEditingEvent(null)
+      await loadEvents()
+    } else {
+      setMessage(JSON.stringify(result))
+    }
   }
 
   async function handleCreateEvent(event) {
@@ -203,18 +243,47 @@ export default function App() {
             {events.length === 0 && <p>No events yet.</p>}
             {events.map((item) => (
               <article key={item.id} className="event-item">
-                <div className="event-head">
-                  <strong>{item.title}</strong>
-                  <span>{item.category?.name || 'Uncategorized'}</span>
-                </div>
-                <p>{item.description || 'No description provided.'}</p>
-                <ul>
-                  <li><strong>Location:</strong> {item.location}</li>
-                  <li><strong>Start:</strong> {item.start_date}</li>
-                  <li><strong>End:</strong> {item.end_date || '—'}</li>
-                  <li><strong>Capacity:</strong> {item.capacity}</li>
-                  <li><strong>Public:</strong> {item.is_public ? 'Yes' : 'No'}</li>
-                </ul>
+                {editingEvent?.id === item.id ? (
+                  <form onSubmit={handleEditSave}>
+                    <input value={editingEvent.title} onChange={(e) => setEditingEvent({ ...editingEvent, title: e.target.value })} placeholder="Title" required />
+                    <textarea value={editingEvent.description} onChange={(e) => setEditingEvent({ ...editingEvent, description: e.target.value })} placeholder="Description" />
+                    <select value={editingEvent.category_id} onChange={(e) => setEditingEvent({ ...editingEvent, category_id: e.target.value })}>
+                      <option value="">No category</option>
+                      {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </select>
+                    <input type="datetime-local" value={editingEvent.start_date} onChange={(e) => setEditingEvent({ ...editingEvent, start_date: e.target.value })} required />
+                    <input type="datetime-local" value={editingEvent.end_date} onChange={(e) => setEditingEvent({ ...editingEvent, end_date: e.target.value })} />
+                    <input value={editingEvent.location} onChange={(e) => setEditingEvent({ ...editingEvent, location: e.target.value })} placeholder="Location" required />
+                    <input type="number" value={editingEvent.capacity} onChange={(e) => setEditingEvent({ ...editingEvent, capacity: e.target.value })} placeholder="Capacity" />
+                    <label className="checkbox-row">
+                      <input type="checkbox" checked={editingEvent.is_public} onChange={(e) => setEditingEvent({ ...editingEvent, is_public: e.target.checked })} />
+                      Public event
+                    </label>
+                    <div className="event-actions">
+                      <button type="submit">Save</button>
+                      <button type="button" className="btn-danger" onClick={() => setEditingEvent(null)}>Cancel</button>
+                    </div>
+                  </form>
+                ) : (
+                  <>
+                    <div className="event-head">
+                      <strong>{item.title}</strong>
+                      <span>{item.category?.name || 'Uncategorized'}</span>
+                    </div>
+                    <p>{item.description || 'No description provided.'}</p>
+                    <ul>
+                      <li><strong>Location:</strong> {item.location}</li>
+                      <li><strong>Start:</strong> {item.start_date}</li>
+                      <li><strong>End:</strong> {item.end_date || '—'}</li>
+                      <li><strong>Capacity:</strong> {item.capacity}</li>
+                      <li><strong>Public:</strong> {item.is_public ? 'Yes' : 'No'}</li>
+                    </ul>
+                    <div className="event-actions">
+                      <button type="button" onClick={() => handleEditStart(item)}>Edit</button>
+                      <button type="button" className="btn-danger" onClick={() => handleDeleteEvent(item.id)}>Delete</button>
+                    </div>
+                  </>
+                )}
               </article>
             ))}
           </div>
