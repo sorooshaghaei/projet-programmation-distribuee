@@ -201,7 +201,17 @@ spec:
               key: EVENT_DB_PASSWORD
 \end{lstlisting}
 
-\todo{Capture d'écran : \code{kubectl get pods,svc -n eventhub} montrant \code{event-service} en \code{Running}.}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{assets/screen-01-docker-compose.png}
+  \caption{Les cinq conteneurs du projet en exécution via \code{docker compose up}.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{assets/screen-02-kubectl-pods-svc.png}
+  \caption{\code{kubectl get pods,svc -n eventhub} -- \code{event-service} en état \code{Running}.}
+\end{figure}
 
 % ====================================================
 \section{Palier 12/20 : une passerelle locale}
@@ -233,7 +243,17 @@ location / {
 
 Côté Kubernetes, l'\code{Ingress} définit les mêmes trois règles sur l'hôte virtuel \code{eventhub.local}. Les services backend restent en \code{ClusterIP} : l'Ingress est \emph{le seul} point d'entrée public du cluster, ce qui est également un élément qui compte dans les paliers de sécurité (18/20).
 
-\todo{Capture d'écran : \code{kubectl get ingress -n eventhub} et navigateur sur \code{http://eventhub.local}.}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{assets/screen-03-kubectl-ingress.png}
+  \caption{\code{kubectl get ingress -n eventhub} -- l'Ingress NGINX avec son adresse.}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{assets/screen-04-browser-frontend.png}
+  \caption{Frontend EventHub accessible via la gateway sur \code{http://eventhub.local}.}
+\end{figure}
 
 % ====================================================
 \section{Palier 14/20 : un deuxième microservice}
@@ -260,7 +280,11 @@ La mise en relation des deux services se fait \textbf{via la passerelle} et non 
     \item un changement d'adresse ou de déploiement d'un service est transparent pour l'autre, la gateway servant de couche d'indirection.
 \end{enumerate}
 
-\todo{Capture d'écran : requête \code{curl} vers \code{/users/auth/login/} puis \code{/events/} avec le token obtenu.}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{assets/screen-05-curl-jwt.png}
+  \caption{Appel \code{curl} au login (obtention du JWT) puis requête authentifiée sur \code{/events/}.}
+\end{figure}
 
 % ====================================================
 \section{Palier 16/20 : base de données}
@@ -304,7 +328,11 @@ Plutôt que de déployer deux instances PostgreSQL -- ce qui complexifierait l'i
 
 Ces deux bases, ainsi que leurs utilisateurs applicatifs respectifs avec des mots de passe distincts, sont créées automatiquement au premier démarrage via un script \code{init.sql} monté dans \code{/docker-entrypoint-initdb.d} par un \code{ConfigMap}. Chaque service ne dispose que des identifiants de sa propre base, ce qui limite le rayon d'impact d'un éventuel compromis.
 
-\todo{Capture d'écran : \code{kubectl exec postgres-0 -n eventhub -- psql -U postgres -l} montrant les deux bases.}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{assets/screen-06-psql-databases.png}
+  \caption{\code{kubectl exec postgres-0 -n eventhub -- psql -U postgres -l} -- les deux bases logiques \code{eventhub\_events} et \code{eventhub\_users}.}
+\end{figure}
 
 % ====================================================
 \section{Palier 18/20 : éléments de sécurité du cluster}
@@ -341,7 +369,11 @@ Ce \code{Role} est lié via un \code{RoleBinding} à un \code{ServiceAccount} \c
 
 L'ensemble des objets est isolé dans le namespace \code{eventhub}. Cela facilite l'application de politiques transverses (RBAC, quotas, NetworkPolicies) et évite toute interférence avec les namespaces système.
 
-\todo{Capture d'écran : \code{kubectl get secret,role,rolebinding,sa -n eventhub}.}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{assets/screen-07-kubectl-rbac.png}
+  \caption{\code{kubectl get secret,role,rolebinding,sa -n eventhub} -- objets RBAC appliqués.}
+\end{figure}
 
 % ====================================================
 \section{Palier 20/20 : déploiement cloud (bonus)}
@@ -359,7 +391,7 @@ La procédure de bascule GKE, validée par nos labs Google Cloud (voir captures 
     \item récupérer l'IP publique de l'Ingress et pointer l'hôte \code{eventhub.local}.
 \end{enumerate}
 
-\todo{Captures d'écran individuelles des Google labs (une par membre du trinôme) à joindre au courriel de rendu, conformément à la consigne du sujet.}
+Les captures d'écran individuelles des profils Google Cloud Skills Boost (une par membre du trinôme) sont jointes au courriel de rendu, conformément à la consigne du sujet.
 
 % ====================================================
 \section{Mise en œuvre et démonstration}
@@ -404,9 +436,17 @@ kubectl apply -f k8s/rbac-viewer.yaml       -f k8s/ingress.yaml
 echo "$(minikube ip) eventhub.local" | sudo tee -a /etc/hosts
 \end{lstlisting}
 
-\todo{Capture d'écran : \code{kubectl get all -n eventhub} avec tous les objets \code{Running} / \code{Ready}.}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{assets/screen-08-kubectl-all.png}
+  \caption{\code{kubectl get all -n eventhub} -- tous les objets en état \code{Running} / \code{Ready}.}
+\end{figure}
 
-\todo{Capture d'écran : page d'accueil du frontend après connexion, avec la liste des évènements chargée depuis l'API.}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{assets/screen-09-frontend-events.png}
+  \caption{Interface EventHub après connexion JWT -- liste des évènements chargée depuis l'API.}
+\end{figure}
 
 % ====================================================
 \section{Évaluation selon les critères du sujet}
