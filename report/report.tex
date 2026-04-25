@@ -176,8 +176,8 @@ L'image est construite à partir de \code{python:3.12-slim}, avec une étape d'i
 
 \begin{lstlisting}[language=bash, caption={Construction et publication de l'image}]
 docker build -t eventhub-event-service:latest ./services/event-service
-docker tag  eventhub-event-service:latest <dockerhub-user>/eventhub-event-service:latest
-docker push <dockerhub-user>/eventhub-event-service:latest
+docker tag  eventhub-event-service:latest 3v3r51nc3/eventhub-event-service:latest
+docker push 3v3r51nc3/eventhub-event-service:latest
 \end{lstlisting}
 
 \subsection{Déploiement Kubernetes}
@@ -252,7 +252,7 @@ Côté Kubernetes, l'\code{Ingress} définit les mêmes trois règles sur l'hôt
 \begin{figure}[H]
   \centering
   \includegraphics[width=\linewidth]{assets/screen-04-browser-frontend.png}
-  \caption{Frontend EventHub accessible via la gateway sur \code{http://eventhub.local}.}
+  \caption{Frontend EventHub accessible via la gateway sur \code{http://localhost:8080} (Docker Compose).}
 \end{figure}
 
 % ====================================================
